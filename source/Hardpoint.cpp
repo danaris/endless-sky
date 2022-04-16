@@ -364,7 +364,7 @@ void Hardpoint::Uninstall()
 
 
 // Set the defensive value of this hardpoint.
-void SetDefensive(bool defensive)
+void Hardpoint::SetDefensive(bool defensive)
 {
 	isDefensive = defensive;
 }
@@ -372,15 +372,15 @@ void SetDefensive(bool defensive)
 
 
 // Toggle the defensive value of this hardpoint.
-void ToggleDefensive()
+void Hardpoint::ToggleDefensive()
 {
-	isDefensive ^= true;
+	isDefensive = !isDefensive;
 }
 
 
 
 // Set the opportunistic value of this hardpoint.
-void SetOpportunistic(bool opportunistic)
+void Hardpoint::SetOpportunistic(bool opportunistic)
 {
 	isOpportunistic = opportunistic;
 }
@@ -388,9 +388,9 @@ void SetOpportunistic(bool opportunistic)
 
 
 // Toggle the opportunistic value of this hardpoint.
-void ToggleOpportunistic()
+void Hardpoint::ToggleOpportunistic()
 {
-	isOpportunistic ^= true;
+	isOpportunistic = !isOpportunistic;
 }
 
 
