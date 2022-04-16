@@ -2410,6 +2410,57 @@ void AI::KeepStation(Ship &ship, Command &command, const Body &target)
 
 void AI::Attack(Ship &ship, Command &command, const Ship &target)
 {
+	// First, figure out what your shortest-range weapon is.
+	double shortestRange = 4000.;
+	bool isArmed = false;
+	bool hasAmmo = false;
+	double minSafeDistance = 0.;
+	double shortestDefensiveRange = shortestRange;
+	bool hasDefensiveAmmo = false;
+	for(const Hardpoint &hardpoint : ship.Weapons())
+	{
+		const Weapon *weapon = hardpoint.GetOutfit();
+		if(weapon && !hardpoint.IsAntiMissile())
+		{
+			isArmed = true;
+			bool hasThisAmmo = (!weapon->Ammo() || ship.OutfitCount(weapon->Ammo()));
+
+			// Exploding weaponry that can damage this ship requires special
+			// consideration (while we have the ammo to use the weapon).
+			if(hasThisAmmo && weapon->BlastRadius() && !weapon->IsSafe())
+				minSafeDistance = max(weapon->BlastRadius() + weapon->TriggerRadius(), minSafeDistance);
+
+			// The missile boat AI should be applied at 1000 pixels range if
+			// all weapons are homing or turrets, and at 2000 if not.
+			double multiplier = (hardpoint.IsHoming() || hardpoint.IsTurret()) ? 1. : .5;
+
+			// If the hardpoint is set to defensive, the installed weapon
+			// should not be considered for determining the shortest range
+			// until all other weapons are out of ammo.
+			if(!hardpoint.IsDefensive())
+			{
+				shortestRange = min(multiplier * weapon->Range(), shortestRange);
+				hasAmmo |= hasThisAmmo;
+			}
+			else
+			{
+				shortestDefensiveRange = min(multiplier * weapon->Range(), shortestDefensiveRange);
+				hasDefensiveAmmo |= hasThisAmmo;
+			}
+		}
+	}
+	// If this ship was using the missile boat AI to run away and bombard its
+	// target from a distance, have it stop running once it is out of ammo. This
+	// is not realistic, but it's a whole lot less annoying for the player when
+	// they are trying to hunt down and kill the last missile boat in a fleet.
+	if(isArmed && !hasAmmo)
+	{
+		if(!hasDefensiveAmmo)
+			shortestRange = 0.;
+		else
+			shortestRange = shortestDefensiveRange;
+	}
+
 	// Deploy any fighters you are carrying.
 	if(!ship.IsYours() && ship.HasBays())
 	{
