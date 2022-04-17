@@ -346,6 +346,8 @@ void Ship::Load(const DataNode &node)
 			Angle gunPortAngle = Angle(0.);
 			bool gunPortParallel = false;
 			bool drawUnder = (key == "gun");
+			bool isDefensive = false;
+			bool isOpportunistic = false;
 			if(child.HasChildren())
 			{
 				for(const DataNode &grand : child)
@@ -358,14 +360,18 @@ void Ship::Load(const DataNode &node)
 						drawUnder = true;
 					else if(grand.Token(0) == "over")
 						drawUnder = false;
+					else if(grand.Token(0) == "defensive")
+						isDefensive = true;
+					else if(grand.Token(0) == "opportunistic")
+						isOpportunistic = true;
 					else
 						grand.PrintTrace("Skipping unrecognized attribute:");
 				}
 			}
 			if(key == "gun")
-				armament.AddGunPort(hardpoint, gunPortAngle, gunPortParallel, drawUnder, outfit);
+				armament.AddGunPort(hardpoint, gunPortAngle, gunPortParallel, drawUnder, outfit, isDefensive, isOpportunistic);
 			else
-				armament.AddTurret(hardpoint, drawUnder, outfit);
+				armament.AddTurret(hardpoint, drawUnder, outfit, isDefensive, isOpportunistic);
 		}
 		else if(key == "never disabled")
 			neverDisabled = true;
@@ -1030,6 +1036,10 @@ void Ship::Save(DataWriter &out) const
 					out.Write("under");
 				else
 					out.Write("over");
+				if(hardpoint.IsDefensive())
+					out.Write("defensive");
+				if(hardpoint.IsOpportunistic())
+					out.Write("opportunistic");
 			}
 			out.EndChild();
 		}
