@@ -156,6 +156,9 @@ bool ShipInfoPanel::KeyDown(SDL_Keycode key, Uint16 mod, const Command &command,
 	}
 	else if(key == 'i' || command.Has(Command::INFO) || (control && key == SDLK_TAB))
 	{
+		// Set scroll so the currently shown ship will be the first in page.
+		panelState.SetScroll(shipIt - panelState.Ships().begin());
+
 		GetUI()->Pop(this);
 		GetUI()->Push(new PlayerInfoPanel(player, std::move(panelState)));
 	}
@@ -472,7 +475,13 @@ void ShipInfoPanel::DrawWeapons(const Rectangle &bounds)
 	{
 		string name = "[empty]";
 		if(hardpoint.GetOutfit())
+		{
 			name = hardpoint.GetOutfit()->DisplayName();
+			if(hardpoint.IsDefensive())
+				name += " (def)";
+			if(hardpoint.IsOpportunistic())
+				name += " (opp)";
+		}
 
 		bool isRight = (hardpoint.GetPoint().X() >= 0.);
 		bool isTurret = hardpoint.IsTurret();
