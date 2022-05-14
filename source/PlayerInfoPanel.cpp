@@ -545,6 +545,7 @@ bool PlayerInfoPanel::Click(int x, int y, int clicks)
 		const bool sameIndex = panelState.SelectedIndex() == hoverIndex;
 		panelState.SelectOnly(hoverIndex);
 		// If not landed, clicking a ship name takes you straight to its info.
+		panelState.SetSelectedIndex(hoverIndex);
 		if(!panelState.CanEdit() || sameIndex)
 		{
 			GetUI()->Pop(this);
