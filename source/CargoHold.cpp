@@ -234,13 +234,7 @@ double CargoHold::OutfitsSizePrecise() const
 // zero, so this check cannot be done by calling OutfitsSize().
 bool CargoHold::HasOutfits() const
 {
-	// The code for adding and removing outfits does not clear the entry in the
-	// map if its value becomes zero, so we need to check all the entries:
-	for(const auto &it : outfits)
-		if(it.second)
-			return true;
-
-	return false;
+	return !outfits.empty();
 }
 
 
@@ -401,7 +395,9 @@ int CargoHold::Transfer(const Outfit *outfit, int amount, CargoHold &to)
 	// Do not invalidate existing iterators by modifying the container.
 	int removed = Remove(outfit, amount);
 	int added = to.Add(outfit, removed);
-	outfits[outfit] += removed - added;
+	int remainder = removed - added;
+	if(remainder)
+		outfits[outfit] += remainder;
 
 	return added;
 }
@@ -537,6 +533,10 @@ int CargoHold::Remove(const Outfit *outfit, int amount)
 
 	amount = min(amount, outfits[outfit]);
 	outfits[outfit] -= amount;
+
+	// Remove the entry if there is no instance of this outfit in this cargo hold.
+	if(!outfits[outfit])
+		outfits.erase(outfit);
 	return amount;
 }
 
