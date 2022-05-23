@@ -1537,7 +1537,7 @@ interface "hail panel"
 		align left
 		width 330
 		truncate back
- 
+
 	button d "_Done"
 		center 250 115
 		dimensions 80 30
