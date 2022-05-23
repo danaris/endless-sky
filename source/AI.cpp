@@ -3509,8 +3509,17 @@ void AI::AutoFire(const Ship &ship, FireCommand &command, bool secondary, bool i
 	if(person.IsPacifist() || ship.CannotAct())
 		return;
 
-	bool beFrugal = (ship.IsYours() && !escortsUseAmmo);
-	if(person.IsFrugal() || (ship.IsYours() && escortsAreFrugal && escortsUseAmmo))
+	bool checkAutoFireMode = false;
+	for(const Hardpoint &hardpoint : ship.Weapons())
+	{
+		if(hardpoint.HasIndividualAFMode())
+		{
+			checkAutoFireMode = true;
+			break;
+		}
+	}
+	bool beFrugal = (ship.IsYours() && !escortsUseAmmo) && !checkAutoFireMode;
+	if(person.IsFrugal() || checkAutoFireMode || (ship.IsYours() && escortsAreFrugal && escortsUseAmmo))
 	{
 		// The frugal personality is only active when ships have more than a certain fraction of their total health,
 		// and are not outgunned. The default threshold is 75%.
@@ -3599,6 +3608,17 @@ void AI::AutoFire(const Ship &ship, FireCommand &command, bool secondary, bool i
 		// Don't fire secondary weapons if told not to.
 		if(!secondary && weapon->Icon())
 			continue;
+		// We might need to check the individual hardpoint frugality settings.
+		if(checkAutoFireMode)
+		{
+			// Don't fire if this hardpoint isn't enabled.
+			if(!hardpoint.IsAutoFireOn())
+				continue;
+			// If the hardpoint is set to 'frugal' and the conditions for firin
+			// when frugal haven't been met, don't fire.
+			if(hardpoint.FrugalAutoFire() && beFrugal)
+				continue;
+		}
 		// Don't expend ammo if trying to be frugal.
 		if(beFrugal && weapon->Ammo())
 			continue;

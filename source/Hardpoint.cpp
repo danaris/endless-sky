@@ -43,9 +43,9 @@ namespace {
 
 // Constructor.
 Hardpoint::Hardpoint(const Point &point, const Angle &baseAngle, bool isTurret,
-	bool isParallel, bool isUnder, const Outfit *outfit, bool defensive,
-	bool opportunistic, bool locked)
-	: outfit(outfit), point(point * .5), baseAngle(baseAngle), isTurret(isTurret), isParallel(isParallel), isUnder(isUnder), isLocked(locked), isDefensive(defensive), isOpportunistic(opportunistic)
+	bool isParallel, bool isUnder, const Outfit *outfit, bool isLocked,
+	bool isDefensive, bool isOpportunistic, bool isAutoFireOn, bool frugalAutoFire, bool hasIndividualAFMode)
+	: outfit(outfit), point(point * .5), baseAngle(baseAngle), isTurret(isTurret), isParallel(isParallel), isUnder(isUnder), isLocked(isLocked), isDefensive(isDefensive), isOpportunistic(isOpportunistic), isAutoFireOn(isAutoFireOn), frugalAutoFire(frugalAutoFire), hasIndividualAFMode(hasIndividualAFMode)
 {
 }
 
@@ -168,6 +168,27 @@ bool Hardpoint::IsDefensive() const
 bool Hardpoint::IsOpportunistic() const
 {
 	return isOpportunistic;
+}
+
+
+
+bool Hardpoint::IsAutoFireOn() const
+{
+	return isAutoFireOn;
+}
+
+
+
+bool Hardpoint::FrugalAutoFire() const
+{
+  return frugalAutoFire;
+}
+
+
+
+bool Hardpoint::HasIndividualAFMode() const
+{
+	return hasIndividualAFMode;
 }
 
 
@@ -371,6 +392,9 @@ void Hardpoint::Uninstall()
 	{
 		isDefensive = false;
 		isOpportunistic = false;
+    isAutoFireOn = true;
+    frugalAutoFire = false;
+    hasIndividualAFMode = false;
 	}
 }
 
@@ -418,6 +442,41 @@ void Hardpoint::SetOpportunistic(bool opportunistic)
 void Hardpoint::ToggleOpportunistic()
 {
 	isOpportunistic = !isOpportunistic;
+}
+
+
+
+void Hardpoint::SetIsAutoFireOn(bool input)
+{
+  isAutoFireOn = input;
+}
+
+
+
+void Hardpoint::ToggleIsAutoFireOn()
+{
+  isAutoFireOn = !isAutoFireOn;
+}
+
+
+
+void Hardpoint::SetFrugalAutoFire(bool input)
+{
+  frugalAutoFire = input;
+}
+
+
+
+void Hardpiont::ToggleFrugalAutoFire()
+{
+  frugalAutoFire = !frugalAutoFire;
+}
+
+
+
+void Hardpoint::SetHasIndividualAFMode(bool input)
+{
+  hasIndividualAFMode = input;
 }
 
 
