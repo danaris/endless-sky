@@ -252,7 +252,10 @@ void MapPanel::Draw()
 	DrawWormholes();
 	DrawTravelPlan();
 	DrawEscorts();
-	DrawLinks();
+    if (!player.Conditions()["no hyperdrive"])
+    {
+        DrawLinks();
+    }
 	DrawSystems();
 	DrawNames();
 	DrawMissions();

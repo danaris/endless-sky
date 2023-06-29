@@ -325,7 +325,7 @@ void PlanetPanel::CheckWarningsAndTakeOff()
 	if(!flightChecks.empty())
 	{
 		// There may be multiple warnings reported, but only 3 result in a ship which cannot jump.
-		const auto jumpWarnings = set<string>{
+        const auto jumpWarnings = player.Conditions()["no hyperdrive"] ? set<string>{ "no bays?", "no fuel?" } : set<string>{
 			"no bays?", "no fuel?", "no hyperdrive?"
 		};
 		for(const auto &result : flightChecks)
