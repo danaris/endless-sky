@@ -245,7 +245,29 @@ interface "main menu"
 		center -420 155
 		dimensions 120 30
 
+	sprite "_menu/test panel"
+		center -60 200
+	button r "Edito_r"
+		center -60 200
+		dimensions 120 30
 
+interface "editor"
+	label "First String:"
+		from 250 -35
+		align left
+	string "first"
+		from 315 -35
+		align left
+		width 200
+		truncate middle
+	label "Second String:"
+		from -250 -35
+		align left
+	string "second"
+		from -185 -35
+		align right
+		width 200
+		truncate left
 
 interface "menu player info"
 	outline "ship sprite"

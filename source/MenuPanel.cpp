@@ -38,6 +38,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include "StartConditionsPanel.h"
 #include "System.h"
 #include "UI.h"
+#include "EditorPanel.h"
 
 #include "opengl.h"
 
@@ -182,6 +183,10 @@ bool MenuPanel::KeyDown(SDL_Keycode key, Uint16 mod, const Command &command, boo
 		scrollSpeed += 1;
 	else if(key == SDLK_UP)
 		scrollSpeed -= 1;
+	else if(key == 'r')
+	{
+		GetUI()->Push(new EditorPanel(player, gamePanels));
+	}
 	else
 		return false;
 

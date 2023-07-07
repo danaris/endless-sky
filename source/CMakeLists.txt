@@ -91,6 +91,7 @@ target_sources(EndlessSkyLib PRIVATE
 	Distribution.h
 	DrawList.cpp
 	DrawList.h
+	EditorPanel.cpp
 	Effect.cpp
 	Effect.h
 	Engine.cpp
