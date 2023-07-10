@@ -1596,12 +1596,12 @@ void Ship::Move(vector<Visual> &visuals, list<shared_ptr<Flotsam>> &flotsam)
 		// Move the turrets.
 		if(!isDisabled)
 			armament.Aim(firingCommands);
-
-		DoInitializeMovement();
-		StepPilot();
-		DoMovement(isUsingAfterburner);
-		StepTargeting();
+		
 	}
+	DoInitializeMovement();
+	StepPilot();
+	DoMovement(isUsingAfterburner);
+	StepTargeting();
 
 	// Move the ship.
 	position += velocity;
@@ -2771,7 +2771,6 @@ int Ship::TakeDamage(vector<Visual> &visuals, const DamageDealt &damage, const G
 {
 	bool wasDisabled = IsDisabled();
 	bool wasDestroyed = IsDestroyed();
-	bool wasWrecked = IsWrecked();
 
 	shields -= damage.Shield();
 	if(damage.Shield() && !isDisabled)
