@@ -53,7 +53,7 @@ private:
 	void CheckWarningsAndTakeOff();
 	void WarningsDialogCallback(bool isOk);
 	void TakeOff(bool distributeCargo);
-
+	void DoRepairWreckedFighters();
 
 private:
 	PlayerInfo &player;

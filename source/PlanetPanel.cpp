@@ -95,33 +95,107 @@ void PlanetPanel::Step()
 
 	if(planet.HasShipyard())
 	{
-		int repairedFighters = 0;
+		
+		int wreckedFighters = 0;
+		int wreckedDrones = 0;
+		int64_t repairCosts = 0;
+		int day = player.GetDate().DaysSinceEpoch();
 		for(const auto &it : player.Ships())
 		{
-			int repairSelf = it->DoRepairWreckedFighter();
-			if(repairSelf == 0)
-				repairedFighters += it->DoRepairMyWreckedFighters();
-			else
-				repairedFighters += repairSelf;
+			if(it->IsWrecked())
+			{
+				if(it->Attributes().Category() == "Fighter")
+					wreckedFighters++;
+				else
+					wreckedDrones++;
+				int64_t total = round(player.FleetDepreciation().Value(*it, day) / 2);
+				repairCosts += total;
+			}
 		}
 
-		if(repairedFighters > 0)
+		if((wreckedFighters + wreckedDrones) > 0)
 		{
 			ostringstream out;
 
-			string fighterWord = "fighters";
-			if(repairedFighters == 1)
-			{
-				fighterWord = "fighter";
-			}
-			out << "You quickly see your wrecked " << fighterWord << " transported to the shipyard for repair.";
+			string repairWord = "";
+			if(wreckedFighters == 1)
+				repairWord = "one fighter";
+			else if(wreckedFighters > 1)
+				repairWord = to_string(wreckedFighters) + " fighters";
 
-			GetUI()->Push(new Dialog(out.str()));
+			if(wreckedDrones > 0)
+			{
+				if(repairWord != "")
+					repairWord += " and ";
+				if(wreckedDrones == 1)
+					repairWord += "one drone";
+				else
+					repairWord += to_string(wreckedDrones) + " drones";
+			}
+			out << "You have a total of " << repairWord << " that were wrecked in combat. In total, it will cost " + to_string(repairCosts) + " credits to make repairs.";
+			
+			if(player.Accounts().Credits() >= repairCosts)
+				GetUI()->Push(new Dialog(this, &PlanetPanel::DoRepairWreckedFighters,
+									  out.str() + " Would you like to pay the shipyard for repairs?"));
+			else
+				GetUI()->Push(new Dialog(out.str() + " You cannot currently afford repairs."));
+
+			
 		}
 	}
 }
 
-
+void PlanetPanel::DoRepairWreckedFighters()
+{
+	int repairedFighters = 0;
+	int repairedDrones = 0;
+	int64_t repairCosts = 0;
+	int day = player.GetDate().DaysSinceEpoch();
+	for(const auto &it : player.Ships())
+	{
+		if(it->IsWrecked())
+		{
+			int64_t total = round(player.FleetDepreciation().Value(*it, day) / 2);
+			if(player.Accounts().Credits() >= total)
+			{
+				player.Accounts().AddCredits(-total);
+				it->DoRepairWreckedFighter();
+				
+				if(it->Attributes().Category() == "Fighter")
+					repairedFighters++;
+				else
+					repairedDrones++;
+				repairCosts += total;
+			}
+			
+		}
+	}
+	if((repairedFighters + repairedDrones) > 0)
+	{
+		ostringstream out;
+		
+		string repairWord = "";
+		if(repairedFighters == 1)
+			repairWord = "one fighter";
+		else if(repairedFighters > 1)
+			repairWord = to_string(repairedFighters) + " fighters";
+		
+		if(repairedDrones > 0)
+		{
+			if(repairWord != "")
+				repairWord += " and ";
+			if(repairedDrones == 1)
+				repairWord += "one drone";
+			else
+				repairWord += to_string(repairedDrones) + " drones";
+		}
+		
+		out << "The shipyard repaired " + repairWord + " for a total of " + Format::CreditString(repairCosts) + ".";
+		
+		GetUI()->Push(new Dialog(out.str()));
+		
+	}
+}
 
 void PlanetPanel::Draw()
 {
