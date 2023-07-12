@@ -39,6 +39,7 @@ public:
 
 	virtual void Step() override;
 
+	virtual std::string PanelType() const override;
 
 protected:
 	virtual int TileSize() const override;

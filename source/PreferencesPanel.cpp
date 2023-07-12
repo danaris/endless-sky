@@ -29,12 +29,15 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include "text/layout.hpp"
 #include "Plugins.h"
 #include "Preferences.h"
+#include "Rectangle.h"
 #include "Screen.h"
+#include "ScrollPane.h"
 #include "Sprite.h"
 #include "SpriteSet.h"
 #include "SpriteShader.h"
 #include "StarField.h"
 #include "text/Table.h"
+#include "TextPane.h"
 #include "text/truncate.hpp"
 #include "UI.h"
 #include "text/WrappedText.h"
@@ -101,6 +104,13 @@ PreferencesPanel::PreferencesPanel()
 	hoverText.SetFont(FontSet::Get(14));
 	hoverText.SetWrapWidth(150);
 	hoverText.SetAlignment(Alignment::LEFT);
+
+	const Interface *pluginInterface = GameData::Interfaces().Get("plugins");
+	Rectangle aboutBox = pluginInterface->GetBox("About Plugin");
+
+	pluginAboutPane = new TextPane(aboutBox.TopLeft(), aboutBox.Width(), "", 14, "medium");
+	pluginAboutScroller = new ScrollPane(aboutBox.TopLeft(), aboutBox.Dimensions(), pluginAboutPane);
+
 }
 
 
@@ -166,6 +176,10 @@ bool PreferencesPanel::KeyDown(SDL_Keycode key, Uint16 mod, const Command &comma
 	{
 		page = key;
 		hoverItem.clear();
+		if(page == 'p')
+			GetUI()->Push(pluginAboutScroller);
+		else
+			GetUI()->Pop(pluginAboutScroller);
 	}
 	else if(key == 'o' && page == 'p')
 		Files::OpenUserPluginFolder();
@@ -855,13 +869,19 @@ void PreferencesPanel::DrawPlugins()
 				Point center(130., top.Y() + .5 * sprite->Height());
 				SpriteShader::Draw(sprite, center);
 				top.Y() += sprite->Height() + 10.;
+				const Interface *pluginInterface = GameData::Interfaces().Get("plugins");
+				Rectangle aboutBox = pluginInterface->GetBox("About Plugin");
+				pluginAboutScroller->SetSize(Point(aboutBox.Width(), aboutBox.Height() - (sprite->Height() + 10)));
+				pluginAboutScroller->SetTopLeft(Point(aboutBox.Left(), aboutBox.Top() - (sprite->Height() + 10)));
 			}
 
-			WrappedText wrap(font);
-			wrap.SetWrapWidth(MAX_TEXT_WIDTH);
 			static const string EMPTY = "(No description given.)";
-			wrap.Wrap(plugin.aboutText.empty() ? EMPTY : plugin.aboutText);
-			wrap.Draw(top, medium);
+			pluginAboutPane->SetText(plugin.aboutText.empty() ? EMPTY : plugin.aboutText);
+			pluginAboutScroller->Draw();
+//			WrappedText wrap(font);
+//			wrap.SetWrapWidth(MAX_TEXT_WIDTH);
+//			wrap.Wrap(plugin.aboutText.empty() ? EMPTY : plugin.aboutText);
+//			wrap.Draw(top, medium);
 		}
 	}
 }
@@ -913,4 +933,10 @@ void PreferencesPanel::Exit()
 	Command::SaveSettings(Files::Config() + "keys.txt");
 
 	GetUI()->Pop(this);
+}
+
+
+string PreferencesPanel::PanelType() const
+{
+	return "PreferencesPanel";
 }

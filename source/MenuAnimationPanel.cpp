@@ -54,3 +54,9 @@ void MenuAnimationPanel::Draw()
 		a += da;
 	}
 }
+
+
+std::string MenuAnimationPanel::PanelType() const
+{
+	return "MenuAnimationPanel";
+}

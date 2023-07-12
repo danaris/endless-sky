@@ -55,6 +55,9 @@ public:
 	static Point TopRight();
 	static Point BottomLeft();
 	static Point BottomRight();
+	
+	static Point GLPoint(Point source);
+	static Point GLSize(Point source);
 };
 
 

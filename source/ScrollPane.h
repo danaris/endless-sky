@@ -1,5 +1,5 @@
-/* HiringPanel.h
-Copyright (c) 2014 by Michael Zahniser
+/* ScrollPane.h
+Copyright (c) 2023 by Timothy Collett
 
 Endless Sky is free software: you can redistribute it and/or modify it under the
 terms of the GNU General Public License as published by the Free Software
@@ -13,37 +13,36 @@ You should have received a copy of the GNU General Public License along with
 this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef HIRING_PANEL_H_
-#define HIRING_PANEL_H_
+#ifndef SCROLL_PANE_H_
+#define SCROLL_PANE_H_
 
-#include "Panel.h"
+#include "Pane.h"
 
-class PlayerInfo;
+#include <string>
+#include <vector>
 
+class Point;
 
-
-// This panel is drawn as an overlay on top of the PlanetPanel. It shows your
-// current crew and passengers and allows you to hire extra crew if you are
-// hunting other ships to capture.
-class HiringPanel : public Panel {
+// Class wrapping a Panel's drawing within a scrollable clipped view
+class ScrollPane : public Pane {
 public:
-	explicit HiringPanel(PlayerInfo &player);
+	ScrollPane(Point topLeft, Point size, Pane *child);
 
-	virtual void Step() override;
 	virtual void Draw() override;
 
-	virtual std::string PanelType() const override;
 
 protected:
 	// Only override the ones you need; the default action is to return false.
-	virtual bool KeyDown(SDL_Keycode key, Uint16 mod, const Command &command, bool isNewPress) override;
+	virtual bool Drag(double dx, double dy) override;
+	virtual bool Scroll(double dx, double dy) override;
 
+	bool DoScroll(double dy);
 
 private:
-	PlayerInfo &player;
-
-	int maxHire;
-	int maxFire;
+	long long int scroll = 0;
+	
+	Pane *child;
+	Point childOrigTopLeft;
 };
 
 

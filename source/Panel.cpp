@@ -269,3 +269,9 @@ void Panel::SetUI(UI *ui)
 {
 	this->ui = ui;
 }
+
+
+string Panel::PanelType() const
+{
+	return "Panel";
+}

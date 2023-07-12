@@ -1011,3 +1011,9 @@ const vector<Ship *> OutfitterPanel::GetShipsToOutfit(bool isBuy) const
 
 	return shipsToOutfit;
 }
+
+
+string OutfitterPanel::PanelType() const
+{
+	return "OutfitterPanel";
+}

@@ -71,6 +71,7 @@ public:
 	// Is fast-forward allowed to be on when this panel is on top of the GUI stack?
 	virtual bool AllowsFastForward() const noexcept;
 
+	virtual std::string PanelType() const;
 
 protected:
 	// Only override the ones you need; the default action is to return false.

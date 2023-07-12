@@ -59,7 +59,6 @@ namespace {
 
 
 EditorPanel::EditorPanel(PlayerInfo &player, UI &gamePanels)
-	: player(player), gamePanels(gamePanels), editorUi(GameData::Interfaces().Get("editor"))
 {
 	assert(GameData::IsLoaded() && "EditorPanel should only be created after all data is fully loaded");
 	SetIsFullScreen(true);
@@ -190,3 +189,8 @@ bool EditorPanel::Click(int x, int y, int clicks)
 }
 
 
+
+string EditorPanel::PanelType() const
+{
+	return "EditorPanel";
+}

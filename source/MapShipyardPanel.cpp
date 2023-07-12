@@ -244,3 +244,9 @@ void MapShipyardPanel::Init()
 		sort(it.second.begin(), it.second.end(),
 			[](const Ship *a, const Ship *b) { return a->DisplayModelName() < b->DisplayModelName(); });
 }
+
+
+string MapShipyardPanel::PanelType() const
+{
+	return "MapShipyardPanel";
+}

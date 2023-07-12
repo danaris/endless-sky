@@ -568,3 +568,9 @@ void LoadPanel::DeleteSave()
 		sideHasFocus = false;
 	}
 }
+
+
+string LoadPanel::PanelType() const
+{
+	return "LoadPanel";
+}

@@ -662,3 +662,8 @@ double BoardingPanel::Plunder::UnitMass() const
 {
 	return outfit ? outfit->Mass() : 1.;
 }
+
+string BoardingPanel::PanelType() const
+{
+	return "BoardingPanel";
+}

@@ -542,3 +542,8 @@ Point ConversationPanel::Paragraph::Draw(Point point, const Color &color) const
 	point.Y() += wrap.Height();
 	return point;
 }
+
+string ConversationPanel::PanelType() const
+{
+	return "ConversationPanel";
+}

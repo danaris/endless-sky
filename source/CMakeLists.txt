@@ -218,6 +218,8 @@ target_sources(EndlessSkyLib PRIVATE
 	OutfitterPanel.h
 	OutlineShader.cpp
 	OutlineShader.h
+	Pane.cpp
+	Pane.h
 	Panel.cpp
 	Panel.h
 	Person.cpp
@@ -266,6 +268,8 @@ target_sources(EndlessSkyLib PRIVATE
 	SavedGame.h
 	Screen.cpp
 	Screen.h
+	ScrollPane.cpp
+	ScrollPane.h
 	Set.h
 	Shader.cpp
 	Shader.h
@@ -314,6 +318,8 @@ target_sources(EndlessSkyLib PRIVATE
 	TestContext.h
 	TestData.cpp
 	TestData.h
+	TextPane.cpp
+	TextPane.h
 	TextReplacements.cpp
 	TextReplacements.h
 	Trade.cpp

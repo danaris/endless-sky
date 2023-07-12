@@ -94,18 +94,29 @@ void GameLoadingPanel::Step()
 void GameLoadingPanel::Draw()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
+	UI::HandleGLError("GLP 1", __FILE__, std::to_string(__LINE__));
 	GameData::Background().Draw(Point(), Point());
+	UI::HandleGLError("GLP 2", __FILE__, std::to_string(__LINE__));
 
 	GameData::DrawMenuBackground(this);
+	UI::HandleGLError("GLP 3", __FILE__, std::to_string(__LINE__));
 
 	// Draw the loading circle.
 	Angle da(ANGLE_OFFSET);
 	Angle a(0.);
 	PointerShader::Bind();
+	UI::HandleGLError("GLP 4", __FILE__, std::to_string(__LINE__));
 	for(int i = 0; i < progress; ++i)
 	{
 		PointerShader::Add(Point(), a.Unit(), 8.f, 20.f, 140.f, Color(.5f, 0.f));
+		UI::HandleGLError("GLP 5_" + std::to_string(i), __FILE__, std::to_string(__LINE__));
 		a += da;
 	}
 	PointerShader::Unbind();
+	UI::HandleGLError("GLP 6", __FILE__, std::to_string(__LINE__));
+}
+
+std::string GameLoadingPanel::PanelType() const
+{
+	return "GameLoadingPanel";
 }

@@ -24,7 +24,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 class Interface;
 class PlayerInfo;
 class UI;
-
+class TextPane;
 
 
 // Class representing the main menu, which is shown before you enter a game or
@@ -37,6 +37,7 @@ public:
 	virtual void Step() override;
 	virtual void Draw() override;
 
+	virtual std::string PanelType() const override;
 
 protected:
 	// Only override the ones you need; the default action is to return false.
@@ -57,6 +58,8 @@ private:
 	std::vector<std::string> credits;
 	long long int scroll = 0;
 	bool scrollingPaused = false;
+	
+	TextPane *testText;
 };
 
 

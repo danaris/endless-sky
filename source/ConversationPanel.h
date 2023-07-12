@@ -54,6 +54,7 @@ template <class T>
 	// Draw this panel.
 	virtual void Draw() override;
 
+	virtual std::string PanelType() const override;
 
 protected:
 	// Event handlers.

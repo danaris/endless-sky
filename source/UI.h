@@ -76,6 +76,8 @@ public:
 
 	// Get the current mouse position.
 	static Point GetMouse();
+	
+	static void HandleGLError(std::string identifier, std::string file, std::string line);
 
 
 private:

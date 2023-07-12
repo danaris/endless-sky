@@ -361,3 +361,9 @@ void Dialog::DoCallback() const
 	if(voidFun)
 		voidFun();
 }
+
+
+string Dialog::PanelType() const
+{
+	return "Dialog";
+}

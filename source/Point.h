@@ -82,7 +82,6 @@ public:
 	// Use the max of each x and each y coordinates.
 	friend Point max(const Point &p, const Point &q);
 
-
 private:
 #ifdef __SSE3__
 	// Private constructor, using a vector.

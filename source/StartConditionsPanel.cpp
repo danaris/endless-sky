@@ -331,3 +331,9 @@ void StartConditionsPanel::Select(StartConditionsList::iterator it)
 	// Scroll the selected scenario into view.
 	ScrollToSelected();
 }
+
+
+string StartConditionsPanel::PanelType() const
+{
+	return "StartConditionsPanel";
+}

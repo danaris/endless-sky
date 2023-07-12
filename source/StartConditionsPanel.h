@@ -41,6 +41,7 @@ public:
 
 	virtual void Draw() override final;
 
+	virtual std::string PanelType() const override;
 
 protected:
 	// Only override the ones you need; the default action is to return false.

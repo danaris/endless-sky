@@ -420,3 +420,9 @@ void ShipyardPanel::SellShip()
 		playerShips.insert(playerShip);
 	player.UpdateCargoCapacities();
 }
+
+
+string ShipyardPanel::PanelType() const
+{
+	return "ShipyardPanel";
+}

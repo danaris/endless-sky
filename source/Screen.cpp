@@ -180,3 +180,17 @@ Point Screen::BottomRight()
 {
 	return Point(.5 * WIDTH, .5 * HEIGHT);
 }
+
+
+Point Screen::GLPoint(Point source)
+{
+	int scaledX = (source.X() + (Width() / 2)) * 2.f;
+	int scaledY = ((Height() / 2) - source.Y()) * 2.f;
+	
+	return Point(scaledX, scaledY);
+}
+
+Point Screen::GLSize(Point source)
+{
+	return Point(source.X() * 2.f, source.Y() * 2.f);
+}

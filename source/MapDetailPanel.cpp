@@ -950,3 +950,9 @@ void MapDetailPanel::SetScroll(double newScroll)
 	if(scroll > maxScroll)
 		scroll = maxScroll;
 }
+
+
+string MapDetailPanel::PanelType() const
+{
+	return "MapDetailPanel";
+}

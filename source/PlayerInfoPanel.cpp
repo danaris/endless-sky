@@ -914,3 +914,9 @@ PlayerInfoPanel::SortableColumn::SortableColumn(
 : name(name), offset(offset), endX(endX), layout(layout), shipSort(shipSort)
 {
 }
+
+
+string PlayerInfoPanel::PanelType() const
+{
+	return "PlayerInfoPanel";
+}

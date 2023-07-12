@@ -299,3 +299,9 @@ void MapOutfitterPanel::Init()
 	for(auto &it : catalog)
 		sort(it.second.begin(), it.second.end(), ByDisplayName<Outfit>());
 }
+
+
+string MapOutfitterPanel::PanelType() const
+{
+	return "MapOutfitterPanel";
+}

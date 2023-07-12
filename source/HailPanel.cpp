@@ -387,3 +387,9 @@ void HailPanel::SetBribe(double scale)
 
 	bribe = 1000 * static_cast<int64_t>(sqrt(value) * scale);
 }
+
+
+string HailPanel::PanelType() const
+{
+	return "HailPanel";
+}

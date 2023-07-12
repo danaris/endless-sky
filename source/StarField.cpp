@@ -27,6 +27,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include "Sprite.h"
 #include "SpriteSet.h"
 #include "System.h"
+#include "UI.h"
 
 #include <algorithm>
 #include <cmath>
@@ -142,7 +143,9 @@ void StarField::Draw(const Point &pos, const Point &vel, double zoom, const Syst
 	if(Preferences::Has("Draw starfield") && density > 0.)
 	{
 		glUseProgram(shader.Object());
+		UI::HandleGLError("SF 1", __FILE__, to_string(__LINE__));
 		glBindVertexArray(vao);
+		UI::HandleGLError("SF 2", __FILE__, to_string(__LINE__));
 
 		for(int pass = 1; pass <= layers; pass++)
 		{
@@ -159,14 +162,18 @@ void StarField::Draw(const Point &pos, const Point &vel, double zoom, const Syst
 			float baseZoom = static_cast<float>(2. * zoom);
 			GLfloat scale[2] = {baseZoom / Screen::Width(), -baseZoom / Screen::Height()};
 			glUniform2fv(scaleI, 1, scale);
+			UI::HandleGLError("SF 3_" + to_string(pass), __FILE__, to_string(__LINE__));
 
 			GLfloat rotate[4] = {
 				static_cast<float>(unit.Y()), static_cast<float>(-unit.X()),
 				static_cast<float>(unit.X()), static_cast<float>(unit.Y())};
-			glUniformMatrix2fv(rotateI, pass, false, rotate);
+			glUniformMatrix2fv(rotateI, 1, false, rotate);
+			UI::HandleGLError("SF 4_" + to_string(pass) + " [[" + to_string(unit.Y()) + ", " + to_string(-unit.X()) + "],[" + to_string(unit.X()) + ", " + to_string(unit.Y()) + "]]", __FILE__, to_string(__LINE__));
 
 			glUniform1f(elongationI, length * zoom);
+			UI::HandleGLError("SF 5_" + to_string(pass), __FILE__, to_string(__LINE__));
 			glUniform1f(brightnessI, min(1., pow(zoom, .5)));
+			UI::HandleGLError("SF 6_" + to_string(pass), __FILE__, to_string(__LINE__));
 
 			// Stars this far beyond the border may still overlap the screen.
 			double borderX = fabs(vel.X()) + 1.;
@@ -191,16 +198,20 @@ void StarField::Draw(const Point &pos, const Point &vel, double zoom, const Syst
 						static_cast<float>(off.Y())
 					};
 					glUniform2fv(translateI, 1, translate);
+					UI::HandleGLError("SF 7_" + to_string(pass) + "_" + to_string(gy) + "_" + to_string(gx), __FILE__, to_string(__LINE__));
 
 					int index = (gx & widthMod) / TILE_SIZE + ((gy & widthMod) / TILE_SIZE) * tileCols;
 					int first = 6 * tileIndex[index];
 					int count = 6 * tileIndex[index + 1] - first;
 					glDrawArrays(GL_TRIANGLES, first, density * count / (pass * layers));
+					UI::HandleGLError("SF 8_" + to_string(pass) + "_" + to_string(gy) + "_" + to_string(gx), __FILE__, to_string(__LINE__));
 				}
 			}
 		}
 		glBindVertexArray(0);
+		UI::HandleGLError("SF 9", __FILE__, to_string(__LINE__));
 		glUseProgram(0);
+		UI::HandleGLError("SF 10", __FILE__, to_string(__LINE__));
 	}
 
 	// Draw the background haze unless it is disabled in the preferences.
@@ -213,7 +224,9 @@ void StarField::Draw(const Point &pos, const Point &vel, double zoom, const Syst
 
 	DrawList drawList;
 	drawList.Clear(0, zoom);
+	UI::HandleGLError("SF 11", __FILE__, to_string(__LINE__));
 	drawList.SetCenter(pos);
+	UI::HandleGLError("SF 12", __FILE__, to_string(__LINE__));
 
 	if(transparency > FADE_PER_FRAME)
 		transparency -= FADE_PER_FRAME;
@@ -230,9 +243,12 @@ void StarField::Draw(const Point &pos, const Point &vel, double zoom, const Syst
 	Point bottomRight = pos + (Screen::BottomRight() + size) / zoom;
 	if(transparency > 0.)
 		AddHaze(drawList, haze[1], topLeft, bottomRight, 1 - transparency);
+	UI::HandleGLError("SF 13", __FILE__, to_string(__LINE__));
 	AddHaze(drawList, haze[0], topLeft, bottomRight, transparency);
+	UI::HandleGLError("SF 14", __FILE__, to_string(__LINE__));
 
 	drawList.Draw();
+	UI::HandleGLError("SF 15", __FILE__, to_string(__LINE__));
 }
 
 

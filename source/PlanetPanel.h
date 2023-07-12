@@ -42,6 +42,7 @@ public:
 	virtual void Step() override;
 	virtual void Draw() override;
 
+	virtual std::string PanelType() const override;
 
 protected:
 	// Only override the ones you need; the default action is to return false.

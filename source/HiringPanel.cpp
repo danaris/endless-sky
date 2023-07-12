@@ -120,3 +120,9 @@ bool HiringPanel::KeyDown(SDL_Keycode key, Uint16 mod, const Command &command, b
 
 	return false;
 }
+
+
+string HiringPanel::PanelType() const
+{
+	return "HiringPanel";
+}

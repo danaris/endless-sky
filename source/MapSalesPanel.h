@@ -40,6 +40,7 @@ public:
 
 	virtual void Draw() override;
 
+	virtual std::string PanelType() const override;
 
 protected:
 	virtual bool KeyDown(SDL_Keycode key, Uint16 mod, const Command &command, bool isNewPress) override;

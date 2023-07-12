@@ -335,3 +335,9 @@ void TradingPanel::Buy(int64_t amount)
 	player.Accounts().AddCredits(-amount * price);
 	GameData::AddPurchase(system, type, amount);
 }
+
+
+string TradingPanel::PanelType() const
+{
+	return "TradingPanel";
+}

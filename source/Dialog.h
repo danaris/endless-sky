@@ -82,6 +82,7 @@ public:
 	// Some dialogs allow fast-forward to stay active.
 	bool AllowsFastForward() const noexcept final;
 
+	virtual std::string PanelType() const override;
 
 protected:
 	// The user can click "ok" or "cancel", or use the tab key to toggle which

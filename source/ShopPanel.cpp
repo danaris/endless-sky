@@ -1347,3 +1347,9 @@ char ShopPanel::CheckButton(int x, int y)
 
 	return ' ';
 }
+
+
+string ShopPanel::PanelType() const
+{
+	return "ShopPanel";
+}

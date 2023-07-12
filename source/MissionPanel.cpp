@@ -1109,3 +1109,9 @@ void MissionPanel::CycleInvolvedSystems(const Mission &mission)
 	cycleInvolvedIndex = 0;
 	CenterOnSystem(mission.Destination()->GetSystem());
 }
+
+
+string MissionPanel::PanelType() const
+{
+	return "MissionPanel";
+}

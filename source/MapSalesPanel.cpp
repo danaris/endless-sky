@@ -447,3 +447,9 @@ void MapSalesPanel::ClickCategory(const string &name)
 	else
 		collapsed.insert(name);
 }
+
+
+string MapSalesPanel::PanelType() const
+{
+	return "MapSalesPanel";
+}

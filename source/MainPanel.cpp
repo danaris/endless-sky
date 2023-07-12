@@ -591,3 +591,9 @@ void MainPanel::StepEvents(bool &isActive)
 		handledFront = false;
 	}
 }
+
+
+string MainPanel::PanelType() const
+{
+	return "MainPanel";
+}

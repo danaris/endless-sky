@@ -335,8 +335,6 @@ Point max(const Point &p, const Point &q)
 #endif
 }
 
-
-
 #ifdef __SSE3__
 // Private constructor, using a vector.
 inline Point::Point(const __m128d &v)

@@ -1,5 +1,5 @@
-/* MenuAnimationPanel.h
-Copyright (c) 2022 by Michael Zahniser
+/* Pane.cpp
+Copyright (c) 2014 by Michael Zahniser
 
 Endless Sky is free software: you can redistribute it and/or modify it under the
 terms of the GNU General Public License as published by the Free Software
@@ -13,28 +13,35 @@ You should have received a copy of the GNU General Public License along with
 this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef MENU_ANIMATION_PANEL_H_
-#define MENU_ANIMATION_PANEL_H_
-
-#include "Panel.h"
+#include "Pane.h"
 
 
-
-// Class representing the menu animation including sound effects and music
-// that appears when the game is started and everything is loaded.
-class MenuAnimationPanel final : public Panel {
-public:
-	MenuAnimationPanel();
-
-	void Step() final;
-	void Draw() final;
-
-	virtual std::string PanelType() const override;
-
-private:
-	float alpha = 1.f;
-};
+using namespace std;
 
 
 
-#endif
+Point Pane::GetTopLeft()
+{
+	return topLeft;
+}
+
+Point Pane::GetSize()
+{
+	return size;
+}
+
+void Pane::SetTopLeft(Point newTopLeft)
+{
+	topLeft = newTopLeft;
+}
+
+void Pane::SetSize(Point newSize)
+{
+	size = newSize;
+}
+
+
+string Pane::PanelType() const
+{
+	return "Pane";
+}

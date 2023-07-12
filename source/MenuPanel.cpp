@@ -39,6 +39,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include "System.h"
 #include "UI.h"
 #include "EditorPanel.h"
+#include "TextPane.h"
 
 #include "opengl.h"
 
@@ -93,6 +94,11 @@ MenuPanel::MenuPanel(PlayerInfo &player, UI &gamePanels)
 
 	if(player.GetPlanet())
 		Audio::PlayMusic(player.GetPlanet()->MusicName());
+	
+	
+	string textToTest = GameData::Planets().Get("Ada")->Description();
+	
+	testText = new TextPane(Point(-200., -200.), 300, textToTest, 14, "medium");
 }
 
 
@@ -153,6 +159,8 @@ void MenuPanel::Draw()
 
 	if(!credits.empty())
 		DrawCredits();
+	
+	testText->Draw();
 }
 
 
@@ -230,4 +238,10 @@ void MenuPanel::DrawCredits() const
 		}
 		y += 20;
 	}
+}
+
+
+string MenuPanel::PanelType() const
+{
+	return "MenuPanel";
 }

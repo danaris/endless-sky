@@ -18,6 +18,8 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include "Command.h"
 #include "Panel.h"
 #include "Screen.h"
+#include "opengl.h"
+#include "Logger.h"
 
 #include <SDL2/SDL.h>
 
@@ -121,7 +123,10 @@ void UI::DrawAll()
 			break;
 
 	for( ; it != stack.end(); ++it)
+	{
 		(*it)->Draw();
+		HandleGLError((*it)->PanelType(), __FILE__, to_string(__LINE__));
+	}
 }
 
 
@@ -291,4 +296,15 @@ void UI::PushOrPop()
 			}
 	}
 	toPop.clear();
+}
+
+
+
+void UI::HandleGLError(string identifier, string file, string line)
+{
+	GLenum err;
+	while((err = glGetError()) != GL_NO_ERROR)
+	{
+		Logger::LogError(identifier + " (" + file + ":" + line + ") GL Error: " + to_string(err));
+	}
 }

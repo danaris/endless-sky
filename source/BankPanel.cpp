@@ -383,3 +383,8 @@ void BankPanel::NewMortgage(const string &str)
 
 	qualify = player.Accounts().Prequalify();
 }
+
+string BankPanel::PanelType() const
+{
+	return "BankPanel";
+}

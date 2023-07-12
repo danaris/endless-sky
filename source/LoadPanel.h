@@ -50,6 +50,7 @@ protected:
 	virtual bool Drag(double dx, double dy) override;
 	virtual bool Scroll(double dx, double dy) override;
 
+	virtual std::string PanelType() const override;
 
 private:
 	void UpdateLists();

@@ -1360,3 +1360,9 @@ void MapPanel::DrawPointer(Point position, unsigned &systemCount, const Color &c
 		PointerShader::Draw(position, angle.Unit(), 14.f + bigger, 19.f + 2 * bigger, -4.f, black);
 	PointerShader::Draw(position, angle.Unit(), 8.f + bigger, 15.f + 2 * bigger, -6.f, color);
 }
+
+
+string MapPanel::PanelType() const
+{
+	return "MapPanel";
+}

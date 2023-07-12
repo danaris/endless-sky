@@ -47,6 +47,7 @@ public:
 	static double GetScroll();
 	static double PlanetPanelHeight();
 
+	virtual std::string PanelType() const override;
 
 protected:
 	// Navigates through the shown planets panel, and drags them around.

@@ -786,3 +786,9 @@ void ShipInfoPanel::Disown()
 	panelState.Disown(ship);
 	UpdateInfo();
 }
+
+
+string ShipInfoPanel::PanelType() const
+{
+	return "ShipInfoPanel";
+}

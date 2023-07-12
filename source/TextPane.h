@@ -1,5 +1,5 @@
-/* HiringPanel.h
-Copyright (c) 2014 by Michael Zahniser
+/* TextPane.h
+Copyright (c) 2023 by Timothy Collett
 
 Endless Sky is free software: you can redistribute it and/or modify it under the
 terms of the GNU General Public License as published by the Free Software
@@ -13,37 +13,46 @@ You should have received a copy of the GNU General Public License along with
 this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef HIRING_PANEL_H_
-#define HIRING_PANEL_H_
+#ifndef TEXT_PANE_H_
+#define TEXT_PANE_H_
 
-#include "Panel.h"
+#include "Pane.h"
+#include "text/WrappedText.h"
+#include "opengl.h"
 
-class PlayerInfo;
+#include <string>
+#include <vector>
 
+class Font;
+class Point;
 
-
-// This panel is drawn as an overlay on top of the PlanetPanel. It shows your
-// current crew and passengers and allows you to hire extra crew if you are
-// hunting other ships to capture.
-class HiringPanel : public Panel {
+// Class representing a display of text
+class TextPane : public Pane {
 public:
-	explicit HiringPanel(PlayerInfo &player);
+	TextPane(Point topLeft, int width, std::string text, int fontSize, std::string colorName);
 
-	virtual void Step() override;
 	virtual void Draw() override;
 
-	virtual std::string PanelType() const override;
+	void SetText(std::string newText);
+	std::string GetText();
 
 protected:
 	// Only override the ones you need; the default action is to return false.
-	virtual bool KeyDown(SDL_Keycode key, Uint16 mod, const Command &command, bool isNewPress) override;
-
+	virtual bool Drag(double dx, double dy) override;
+	virtual bool Scroll(double dx, double dy) override;
+	void Render();
 
 private:
-	PlayerInfo &player;
-
-	int maxHire;
-	int maxFire;
+	long long int scroll = 0;
+	
+	int width = 0;
+	std::string text;
+	
+	GLuint textureName;
+	GLuint framebufferName;
+	
+	WrappedText textWrap;
+	std::string colorName;
 };
 
 

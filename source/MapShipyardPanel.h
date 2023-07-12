@@ -53,6 +53,7 @@ protected:
 
 	virtual void DrawItems() override;
 
+	virtual std::string PanelType() const override;
 
 private:
 	void Init();

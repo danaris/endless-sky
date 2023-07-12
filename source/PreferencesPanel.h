@@ -26,7 +26,8 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include <string>
 #include <vector>
 
-
+class TextPane;
+class ScrollPane;
 
 // UI panel for editing preferences, especially the key mappings.
 class PreferencesPanel : public Panel {
@@ -46,6 +47,7 @@ protected:
 
 	virtual void EndEditing() override;
 
+	virtual std::string PanelType() const override;
 
 private:
 	void DrawControls();
@@ -80,6 +82,9 @@ private:
 	std::vector<ClickZone<Command>> zones;
 	std::vector<ClickZone<std::string>> prefZones;
 	std::vector<ClickZone<std::string>> pluginZones;
+	
+	TextPane *pluginAboutPane;
+	ScrollPane *pluginAboutScroller;
 };
 
 

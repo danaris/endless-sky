@@ -1,5 +1,5 @@
-/* HiringPanel.h
-Copyright (c) 2014 by Michael Zahniser
+/* Pane.h
+Copyright (c) 2023 by Timothy Collett
 
 Endless Sky is free software: you can redistribute it and/or modify it under the
 terms of the GNU General Public License as published by the Free Software
@@ -13,39 +13,25 @@ You should have received a copy of the GNU General Public License along with
 this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef HIRING_PANEL_H_
-#define HIRING_PANEL_H_
+#ifndef PANE_H_
+#define PANE_H_
 
 #include "Panel.h"
 
-class PlayerInfo;
+class Point;
 
-
-
-// This panel is drawn as an overlay on top of the PlanetPanel. It shows your
-// current crew and passengers and allows you to hire extra crew if you are
-// hunting other ships to capture.
-class HiringPanel : public Panel {
+// Class representing an individual interface piece with its own bounding rect
+class Pane : public Panel {
 public:
-	explicit HiringPanel(PlayerInfo &player);
 
-	virtual void Step() override;
-	virtual void Draw() override;
-
+	Point GetTopLeft();
+	Point GetSize();
+	void SetTopLeft(Point newTopLeft);
+	void SetSize(Point newSize);
 	virtual std::string PanelType() const override;
-
 protected:
-	// Only override the ones you need; the default action is to return false.
-	virtual bool KeyDown(SDL_Keycode key, Uint16 mod, const Command &command, bool isNewPress) override;
-
-
-private:
-	PlayerInfo &player;
-
-	int maxHire;
-	int maxFire;
+	Point topLeft;
+	Point size;
 };
-
-
 
 #endif

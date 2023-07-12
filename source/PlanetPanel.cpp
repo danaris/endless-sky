@@ -398,3 +398,9 @@ void PlanetPanel::TakeOff()
 		GetUI()->Pop(this);
 	}
 }
+
+
+string PlanetPanel::PanelType() const
+{
+	return "PlanetPanel";
+}

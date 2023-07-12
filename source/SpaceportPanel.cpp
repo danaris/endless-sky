@@ -123,3 +123,9 @@ const News *SpaceportPanel::PickNews() const
 
 	return matches.empty() ? nullptr : matches[Random::Int(matches.size())];
 }
+
+
+string SpaceportPanel::PanelType() const
+{
+	return "SpaceportPanel";
+}

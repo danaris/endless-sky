@@ -36,6 +36,7 @@ public:
 	void Step() final;
 	void Draw() final;
 
+	virtual std::string PanelType() const override;
 
 private:
 	PlayerInfo &player;
