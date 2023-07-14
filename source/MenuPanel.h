@@ -24,7 +24,6 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 class Interface;
 class PlayerInfo;
 class UI;
-class TextPane;
 
 
 // Class representing the main menu, which is shown before you enter a game or
@@ -58,8 +57,7 @@ private:
 	std::vector<std::string> credits;
 	long long int scroll = 0;
 	bool scrollingPaused = false;
-	
-	TextPane *testText;
+
 };
 
 

@@ -26,15 +26,17 @@ class Point;
 // Class wrapping a Panel's drawing within a scrollable clipped view
 class ScrollPane : public Pane {
 public:
+	ScrollPane();
 	ScrollPane(Point topLeft, Point size, Pane *child);
 
 	virtual void Draw() override;
-
+	
+	virtual bool Scroll(double dx, double dy) override;
+	void SetChild(Pane *newChild);
 
 protected:
 	// Only override the ones you need; the default action is to return false.
 	virtual bool Drag(double dx, double dy) override;
-	virtual bool Scroll(double dx, double dy) override;
 
 	bool DoScroll(double dy);
 

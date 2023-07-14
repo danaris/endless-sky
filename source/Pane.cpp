@@ -15,6 +15,8 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "Pane.h"
 
+#include "Rectangle.h"
+#include "Point.h"
 
 using namespace std;
 
@@ -44,4 +46,9 @@ void Pane::SetSize(Point newSize)
 string Pane::PanelType() const
 {
 	return "Pane";
+}
+
+Rectangle Pane::Bounds()
+{
+	return Rectangle(Point(topLeft.X() + size.X() / 2, topLeft.Y() + size.Y() / 2), size);
 }

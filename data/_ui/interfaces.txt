@@ -530,9 +530,9 @@ interface "plugins"
 		align top left
 		color bright
 	box "About Plugin"
-		from 40 -10
+		from 15 -138
 		align top left
-		dimensions 150 300
+		dimensions 230 300
 
 
 interface "preferences"

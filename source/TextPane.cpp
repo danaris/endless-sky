@@ -56,8 +56,8 @@ TextPane::TextPane(Point topLeft, int width, string text, int fontSize, string c
 void TextPane::Render()
 {
 	framebufferName = 0;
-	Point glSize = Screen::GLSize(Point(width, textWrap.Height()));
-	Point glBottomLeft = Screen::GLPoint(Point(topLeft.X(), topLeft.Y() + textWrap.Height()));
+	Point mySize = Point(width, textWrap.Height());
+	Point glSize = Screen::GLSize(mySize);
 	Logger::LogError("Text Pane rendering with GL size " + to_string(glSize.X()) + "x" + to_string(glSize.Y()));
 	UI::HandleGLError("0", __FILE__, to_string(__LINE__));
 	glGenFramebuffers(1, &framebufferName);
@@ -84,46 +84,35 @@ void TextPane::Render()
 	glDrawBuffers(1, drawBuffers);
 	UI::HandleGLError("F", __FILE__, to_string(__LINE__));
 	
-	//glBindFramebuffer(GL_FRAMEBUFFER, framebufferName);
-	glViewport(glBottomLeft.X(),glBottomLeft.Y(),glSize.X(),glSize.Y());
-	const Color &frontColor = *GameData::Colors().Get("active mission");
-	const Color &backColor = *GameData::Colors().Get("blocked mission");
-	//FillShader::Fill(Point(topLeft.X() + width / 2, topLeft.Y() + textWrap.Height() / 2),Point(width, textWrap.Height()), backColor);
-	int fillStartX = 0;
-	int fillStartY = 0;
-	int fillEndX = Screen::Width();
-	int fillEndY = Screen::Height();
-	int fillWidth = fillEndX - fillStartX;
-	int fillHeight = fillEndY - fillStartY;
-	FillShader::Fill(Point(fillStartX, fillStartY),Point(fillWidth, fillHeight), backColor);
-	FillShader::Fill(Point(fillStartX + 20, fillStartY + 20),Point(fillWidth-40, fillHeight-40), frontColor);
+//	const Color &frontColor = *GameData::Colors().Get("dim");//Get("active mission");
+//	const Color &backColor = *GameData::Colors().Get("faint");
+//	int glStartX = 0;//Screen::Width() / 2;
+//	int glStartY = 0;//Screen::Height() / 2;
+//	int glWidth = glSize.X();//Screen::Width() * 2.f;
+//	int glHeight = glSize.Y();//Screen::Height() * 2.f;
+//	int glCenterX = glStartX + glWidth / 2;
+//	int glCenterY = glStartY + glHeight / 2;
+//	Point glFillCenter = Point(glCenterX, glCenterY);
+//	Point fillCenter = Screen::ESPoint(glFillCenter);
+//	Point fillSize = Screen::ESSize(Point(glWidth, glHeight));
+//	FillShader::Fill(fillCenter,fillSize, backColor);
+//	FillShader::Fill(fillCenter,Point(fillSize.X() - 40, fillSize.Y() - 40), frontColor);
+//	Logger::LogError("Background from (" + to_string(fillCenter.X()) + ", " + to_string(fillCenter.Y()) + ") at " + to_string(fillSize.X()) + "x" + to_string(fillSize.Y()));
+//	Logger::LogError("Background GL from (" + to_string(glFillCenter.X()) + ", " + to_string(glFillCenter.Y()) + ") at " + to_string(glWidth) + "x" + to_string(glHeight));
+//	
+//	GLint viewport[4];
+//	glGetIntegerv(GL_VIEWPORT, viewport);
+//	Logger::LogError("GL Viewport from (" + to_string(viewport[0]) + ", " + to_string(viewport[1]) + ") at " + to_string(viewport[2]) + "x" + to_string(viewport[3]));
 	
-	GLint viewport[4];
-	glGetIntegerv(GL_VIEWPORT, viewport);
-	Logger::LogError("GL Viewport from (" + to_string(viewport[0]) + ", " + to_string(viewport[1]) + ") at " + to_string(viewport[2]) + "x" + to_string(viewport[3]));
-	
-	int chunkCount = 100;
-	float xZero = -.5 * Screen::Width();
-	float yZero =-.5 * Screen::Height();
-	float widthChunk = Screen::Width() / chunkCount;
-	float heightChunk = Screen::Height() / chunkCount;
-	float colorChunk = 0.95 / chunkCount;
-	Point stripSize = Point(widthChunk, heightChunk);
-	for (int i = 0; i < chunkCount; i++) {
-		for (int j = 0; j < chunkCount; j++) {
-			Color stripColor = Color(colorChunk * i, colorChunk * j, .95);
-			Point stripPoint = Point(xZero + i * widthChunk, yZero + j * heightChunk);
-			FillShader::Fill(stripPoint,stripSize, stripColor);
-			//Logger::LogError("Text Pane drawing test from (" + to_string(stripPoint.X()) + ", " + to_string(stripPoint.Y()) + ") to (" + to_string(stripPoint.X() + stripSize.X()) + ", " + to_string(stripPoint.Y() + stripSize.Y()));
-		}
-	}
 	const Color &textColor = *GameData::Colors().Get(colorName);
-	textWrap.Draw(Point(topLeft.X(),textWrap.Height()), textColor);
+	Point glTextTopLeft = Point(0, glSize.Y());
+	Point textTopLeft = Screen::ESPoint(glTextTopLeft);
+	textWrap.Draw(textTopLeft, textColor); //topLeft
+	Logger::LogError("Text top left at (" + to_string(textTopLeft.X()) + ", " + to_string(textTopLeft.Y()) + ")");
 	UI::HandleGLError("G", __FILE__, to_string(__LINE__));
 	
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glViewport(0, 0, Screen::Width()*2, Screen::Height()*2);
 	UI::HandleGLError("H", __FILE__, to_string(__LINE__));
 }
 
@@ -132,18 +121,17 @@ void TextPane::Draw() {
 	Point glBottomLeft = Screen::GLPoint(Point(topLeft.X(), topLeft.Y() + textWrap.Height()));
 	Point glSize = Screen::GLSize(Point(width, textWrap.Height()));
 	//Logger::LogError("Text Pane drawing with GL bottom left (" + to_string(glBottomLeft.X()) + ", " + to_string(glBottomLeft.Y()) + ") and GL size " + to_string(glSize.X()) + "x" + to_string(glSize.Y()) + " and screen size " + to_string((GLint)Screen::Width()*2) + "x" + to_string((GLint)Screen::Height()*2));
-	//glViewport(glBottomLeft.X(),glBottomLeft.Y(),glSize.X(),glSize.Y());
+	glViewport(glBottomLeft.X(),glBottomLeft.Y(),glSize.X(),glSize.Y());
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, framebufferName);
 	UI::HandleGLError("I", __FILE__, to_string(__LINE__));
-	glBlitFramebuffer(0,0,4000,400,//(GLint)Screen::Width()*2, (GLint)Screen::Height()*2,//glSize.X(),glSize.Y(),
+	glBlitFramebuffer(0,0,glSize.X(),glSize.Y(),//(GLint)Screen::Width()*2, (GLint)Screen::Height()*2,//
 					  //0,0,(GLint)Screen::Width()*2, (GLint)Screen::Height()*2,
 					  glBottomLeft.X(),glBottomLeft.Y(),glBottomLeft.X() + glSize.X(),glBottomLeft.Y() + glSize.Y(),
 					  GL_COLOR_BUFFER_BIT, GL_LINEAR);
-	const Color &backColor = *GameData::Colors().Get("available job");
 	UI::HandleGLError("J", __FILE__, to_string(__LINE__));
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
 	UI::HandleGLError("K", __FILE__, to_string(__LINE__));
-	//glViewport(0, 0, Screen::Width()*2, Screen::Height()*2);
+	glViewport(0, 0, Screen::Width()*2, Screen::Height()*2);
 }
 
 bool TextPane::Drag(double dx, double dy) {
@@ -164,4 +152,14 @@ void TextPane::SetText(string newText)
 {
 	text = newText;
 	textWrap.Wrap(text);
+	Render();
+}
+
+Point TextPane::GetSize() {
+	return Point(width, textWrap.Height());
+}
+
+int TextPane::TextHeight()
+{
+	return textWrap.Height();
 }

@@ -19,16 +19,18 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include "Panel.h"
 
 class Point;
+class Rectangle;
 
 // Class representing an individual interface piece with its own bounding rect
 class Pane : public Panel {
 public:
 
 	Point GetTopLeft();
-	Point GetSize();
+	virtual Point GetSize();
 	void SetTopLeft(Point newTopLeft);
 	void SetSize(Point newSize);
 	virtual std::string PanelType() const override;
+	Rectangle Bounds();
 protected:
 	Point topLeft;
 	Point size;

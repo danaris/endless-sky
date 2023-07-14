@@ -31,10 +31,12 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 using namespace std;
 
-namespace {
-	const int SCROLL_MOD = 2;
-	int scrollSpeed = 1;
-	bool showCreditsWarning = true;
+ScrollPane::ScrollPane()
+{
+	this->topLeft = Point(0,0);
+	this->size = Point(0,0);
+	this->child = nullptr;
+	SetTrapAllEvents(false);
 }
 
 ScrollPane::ScrollPane(Point topLeft, Point size, Pane *child) {
@@ -59,18 +61,20 @@ void ScrollPane::Draw() {
 	//Logger::LogError("Bounds are (" + to_string(bottomLeft.X()) + ", " + to_string(bottomLeft.Y()) + ") " + to_string(size.X()) + "x" + to_string(size.Y()));
 	
 	glEnable(GL_SCISSOR_TEST);
-	GLint scaledX = (topLeft.X() + (Screen::Width() / 2)) * 2.f;
-	GLint scaledY = (bottom + (Screen::Height() / 2));// * 2.f;
-	GLsizei scaledWidth = size.X() * 2.f;
-	GLsizei scaledHeight = size.Y() * 2.f;
-	glScissor(scaledX, scaledY, scaledWidth, scaledHeight);
+	Point glBottomLeft = Screen::GLPoint(Point(topLeft.X(), topLeft.Y() + size.Y()));
+	Point glSize = Screen::GLSize(size);
+	//GLint scaledX = (topLeft.X() + (Screen::Width() / 2)) * 2.f;
+	//GLint scaledY = (bottom + (Screen::Height() / 2));// * 2.f;
+	//GLsizei scaledWidth = size.X() * 2.f;
+	//GLsizei scaledHeight = size.Y() * 2.f;
+	glScissor(glBottomLeft.X(), glBottomLeft.Y(), glSize.X(), glSize.Y());
 	
 	double centerX = size.X() / 2 + topLeft.X();
 	double centerY = size.Y() / 2 + topLeft.Y();
 	Point center = Point(centerX, centerY);
-	const Color &opaque = *GameData::Colors().Get("active mission");
+	//const Color &opaque = *GameData::Colors().Get("active mission");
 	//FillShader::Fill(center, size, opaque);
-	FillShader::Fill(Point(0,0), Point(Screen::RawWidth(), Screen::RawHeight()), opaque);
+	//FillShader::Fill(Point(0,0), Point(Screen::RawWidth(), Screen::RawHeight()), opaque);
 	
 	GLfloat box[4];
 	glGetFloatv(GL_SCISSOR_BOX, box);
@@ -79,6 +83,22 @@ void ScrollPane::Draw() {
 	child->Draw();
 	glDisable(GL_SCISSOR_TEST);
 	
+	if(size.Y() < child->GetSize().Y())
+	{
+		float thumbPct = size.Y() / child->GetSize().Y();
+		float thumbHeight = size.Y() * thumbPct;
+		float thumbCenterX = topLeft.X() + size.X() - 5;
+		float scrollScaled = scroll * thumbPct;
+		float thumbCenterY = scrollScaled + (thumbHeight / 2)  + topLeft.Y();
+		Color thumbColor = Color(0.8, 0.8, 0.8, 0.6);
+		FillShader::Fill(Point(thumbCenterX,thumbCenterY), Point(10, thumbHeight), thumbColor);
+	}
+}
+
+void ScrollPane::SetChild(Pane *newChild)
+{
+	child = newChild;
+	this->childOrigTopLeft = child->GetTopLeft();
 }
 
 bool ScrollPane::Drag(double dx, double dy)
@@ -90,11 +110,10 @@ bool ScrollPane::Scroll(double dx, double dy)
 	return DoScroll(dy);
 }
 
-
 bool ScrollPane::DoScroll(double dy)
 {
 	double newScroll = scroll;
-	double maxScroll = size.Y();
+	double maxScroll = child->GetSize().Y() - size.Y();
 
 	newScroll = max(0., min(maxScroll, scroll - dy));
 	

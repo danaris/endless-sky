@@ -90,27 +90,27 @@ namespace {
 PreferencesPanel::PreferencesPanel()
 	: editing(-1), selected(0), hover(-1)
 {
-	// Select the first valid plugin.
+	const Interface *pluginInterface = GameData::Interfaces().Get("plugins");
+	Rectangle aboutBox = pluginInterface->GetBox("About Plugin");
+	static const string EMPTY = "(No description given.)";
+	// Select the first valid plugin, and set up the About boxes for all the plugins
 	for(const auto &plugin : Plugins::Get())
+	{
 		if(plugin.second.IsValid())
 		{
 			selectedPlugin = plugin.first;
-			break;
 		}
 
+		TextPane *pluginAboutPane = new TextPane(aboutBox.TopLeft(), aboutBox.Width(), "", 14, "medium");
+		pluginAboutPane->SetText(plugin.second.aboutText.empty() ? EMPTY : plugin.second.aboutText);
+		auto *pluginAboutScroller = pluginPanes.Get(plugin.first);
+		pluginAboutScroller->SetChild(pluginAboutPane);
+		pluginAboutScroller->SetTopLeft(aboutBox.TopLeft());
+		pluginAboutScroller->SetSize(aboutBox.Dimensions());
+
+	}
+
 	SetIsFullScreen(true);
-
-	// Initialize a centered tooltip.
-	hoverText.SetFont(FontSet::Get(14));
-	hoverText.SetWrapWidth(150);
-	hoverText.SetAlignment(Alignment::LEFT);
-
-	const Interface *pluginInterface = GameData::Interfaces().Get("plugins");
-	Rectangle aboutBox = pluginInterface->GetBox("About Plugin");
-
-	pluginAboutPane = new TextPane(aboutBox.TopLeft(), aboutBox.Width(), "", 14, "medium");
-	pluginAboutScroller = new ScrollPane(aboutBox.TopLeft(), aboutBox.Dimensions(), pluginAboutPane);
-
 }
 
 
@@ -303,7 +303,17 @@ bool PreferencesPanel::Click(int x, int y, int clicks)
 	for(const auto &zone : pluginZones)
 		if(zone.Contains(point))
 		{
+//			ScrollPane *oldPane = pluginPanes.Get(selectedPlugin);
+//			GetUI()->Pop(oldPane);
 			selectedPlugin = zone.Value();
+//			ScrollPane *newPane = pluginPanes.Get(selectedPlugin);
+//			GetUI()->Push(newPane);
+			for(const auto &it : Plugins::Get())
+			{
+				const auto &plugin = it.second;
+				if(!plugin.IsValid())
+					continue;
+			}
 			break;
 		}
 
@@ -340,6 +350,13 @@ bool PreferencesPanel::Hover(int x, int y)
 // Change the value being hovered over in the direction of the scroll.
 bool PreferencesPanel::Scroll(double dx, double dy)
 {
+	ScrollPane *selectedPluginPane = pluginPanes.Get(selectedPlugin);
+	if(dy && selectedPluginPane->Bounds().Contains(UI::GetMouse()))
+	{
+		selectedPluginPane->Scroll(dx, dy);
+		return true;
+	}
+
 	if(!dy || page != 's' || hoverItem.empty())
 		return false;
 
@@ -869,15 +886,9 @@ void PreferencesPanel::DrawPlugins()
 				Point center(130., top.Y() + .5 * sprite->Height());
 				SpriteShader::Draw(sprite, center);
 				top.Y() += sprite->Height() + 10.;
-				const Interface *pluginInterface = GameData::Interfaces().Get("plugins");
-				Rectangle aboutBox = pluginInterface->GetBox("About Plugin");
-				pluginAboutScroller->SetSize(Point(aboutBox.Width(), aboutBox.Height() - (sprite->Height() + 10)));
-				pluginAboutScroller->SetTopLeft(Point(aboutBox.Left(), aboutBox.Top() - (sprite->Height() + 10)));
 			}
 
-			static const string EMPTY = "(No description given.)";
-			pluginAboutPane->SetText(plugin.aboutText.empty() ? EMPTY : plugin.aboutText);
-			pluginAboutScroller->Draw();
+			pluginPanes.Get(selectedPlugin)->Draw();
 //			WrappedText wrap(font);
 //			wrap.SetWrapWidth(MAX_TEXT_WIDTH);
 //			wrap.Wrap(plugin.aboutText.empty() ? EMPTY : plugin.aboutText);

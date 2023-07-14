@@ -58,6 +58,8 @@ public:
 	
 	static Point GLPoint(Point source);
 	static Point GLSize(Point source);
+	static Point ESPoint(Point source);
+	static Point ESSize(Point source);
 };
 
 

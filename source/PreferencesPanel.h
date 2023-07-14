@@ -22,6 +22,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include "Command.h"
 #include "Point.h"
 #include "text/WrappedText.h"
+#include "Set.h"
 
 #include <string>
 #include <vector>
@@ -82,9 +83,8 @@ private:
 	std::vector<ClickZone<Command>> zones;
 	std::vector<ClickZone<std::string>> prefZones;
 	std::vector<ClickZone<std::string>> pluginZones;
-	
-	TextPane *pluginAboutPane;
-	ScrollPane *pluginAboutScroller;
+
+	Set<ScrollPane> pluginPanes;
 };
 
 

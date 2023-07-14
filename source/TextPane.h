@@ -35,6 +35,8 @@ public:
 
 	void SetText(std::string newText);
 	std::string GetText();
+	int TextHeight();
+	Point GetSize() override;
 
 protected:
 	// Only override the ones you need; the default action is to return false.
