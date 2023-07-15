@@ -322,6 +322,8 @@ target_sources(EndlessSkyLib PRIVATE
 	TextPane.h
 	TextReplacements.cpp
 	TextReplacements.h
+	TextureShader.cpp
+	TextureShader.h
 	Trade.cpp
 	Trade.h
 	TradingPanel.cpp

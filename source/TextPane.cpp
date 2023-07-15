@@ -26,6 +26,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include "GameData.h"
 #include "Screen.h"
 #include "FillShader.h"
+#include "TextureShader.h"
 #include "UI.h"
 
 #include <algorithm>
@@ -34,7 +35,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 using namespace std;
 
-TextPane::TextPane(Point topLeft, int width, string text, int fontSize, string colorName) {
+TextPane::TextPane(Point topLeft, int width, string text, int fontSize, string textColor, string backgroundColor) {
 	this->width = width;
 	this->text = text;
 	this->topLeft = topLeft;
@@ -44,7 +45,8 @@ TextPane::TextPane(Point topLeft, int width, string text, int fontSize, string c
 	this->textWrap.SetWrapWidth(width);
 	textWrap.Wrap(text);
 	
-	this->colorName = colorName;
+	this->textColorName = textColor;
+	this->backgroundColorName = backgroundColor;
 	SetTrapAllEvents(false);
 	
 	Logger::LogError("Screen size is " + to_string(Screen::Width()) + "x" + to_string(Screen::Height()));
@@ -104,9 +106,12 @@ void TextPane::Render()
 //	glGetIntegerv(GL_VIEWPORT, viewport);
 //	Logger::LogError("GL Viewport from (" + to_string(viewport[0]) + ", " + to_string(viewport[1]) + ") at " + to_string(viewport[2]) + "x" + to_string(viewport[3]));
 	
-	const Color &textColor = *GameData::Colors().Get(colorName);
+	const Color &textColor = *GameData::Colors().Get(textColorName);
+	const Color &backColor = *GameData::Colors().Get(backgroundColorName);
 	Point glTextTopLeft = Point(0, glSize.Y());
 	Point textTopLeft = Screen::ESPoint(glTextTopLeft);
+	Point center = Point(size.X() / 2, size.Y() / 2);
+	FillShader::Fill(center, size, backColor);
 	textWrap.Draw(textTopLeft, textColor); //topLeft
 	Logger::LogError("Text top left at (" + to_string(textTopLeft.X()) + ", " + to_string(textTopLeft.Y()) + ")");
 	UI::HandleGLError("G", __FILE__, to_string(__LINE__));
@@ -118,16 +123,18 @@ void TextPane::Render()
 
 void TextPane::Draw() {
 
-	Point glBottomLeft = Screen::GLPoint(Point(topLeft.X(), topLeft.Y() + textWrap.Height()));
-	Point glSize = Screen::GLSize(Point(width, textWrap.Height()));
+	Point bottomLeft = Point(topLeft.X(), topLeft.Y() + textWrap.Height());
+	Point glBottomLeft = Screen::GLPoint(bottomLeft);
+	Point glSize = Screen::GLSize(size);
 	//Logger::LogError("Text Pane drawing with GL bottom left (" + to_string(glBottomLeft.X()) + ", " + to_string(glBottomLeft.Y()) + ") and GL size " + to_string(glSize.X()) + "x" + to_string(glSize.Y()) + " and screen size " + to_string((GLint)Screen::Width()*2) + "x" + to_string((GLint)Screen::Height()*2));
 	glViewport(glBottomLeft.X(),glBottomLeft.Y(),glSize.X(),glSize.Y());
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, framebufferName);
 	UI::HandleGLError("I", __FILE__, to_string(__LINE__));
-	glBlitFramebuffer(0,0,glSize.X(),glSize.Y(),//(GLint)Screen::Width()*2, (GLint)Screen::Height()*2,//
-					  //0,0,(GLint)Screen::Width()*2, (GLint)Screen::Height()*2,
-					  glBottomLeft.X(),glBottomLeft.Y(),glBottomLeft.X() + glSize.X(),glBottomLeft.Y() + glSize.Y(),
-					  GL_COLOR_BUFFER_BIT, GL_LINEAR);
+//	glBlitFramebuffer(0,0,glSize.X(),glSize.Y(),//(GLint)Screen::Width()*2, (GLint)Screen::Height()*2,//
+//					  //0,0,(GLint)Screen::Width()*2, (GLint)Screen::Height()*2,
+//					  glBottomLeft.X(),glBottomLeft.Y(),glBottomLeft.X() + glSize.X(),glBottomLeft.Y() + glSize.Y(),
+//					  GL_COLOR_BUFFER_BIT, GL_LINEAR);
+	TextureShader::Draw(textureName, bottomLeft);
 	UI::HandleGLError("J", __FILE__, to_string(__LINE__));
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
 	UI::HandleGLError("K", __FILE__, to_string(__LINE__));

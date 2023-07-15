@@ -29,7 +29,7 @@ class Point;
 // Class representing a display of text
 class TextPane : public Pane {
 public:
-	TextPane(Point topLeft, int width, std::string text, int fontSize, std::string colorName);
+	TextPane(Point topLeft, int width, std::string text, int fontSize, std::string textColor, std::string backgroundColor);
 
 	virtual void Draw() override;
 
@@ -54,7 +54,8 @@ private:
 	GLuint framebufferName;
 	
 	WrappedText textWrap;
-	std::string colorName;
+	std::string textColorName;
+	std::string backgroundColorName;
 };
 
 

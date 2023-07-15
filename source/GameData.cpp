@@ -64,6 +64,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include "System.h"
 #include "Test.h"
 #include "TestData.h"
+#include "TextureShader.h"
 #include "UniverseObjects.h"
 
 #include <algorithm>
@@ -212,6 +213,7 @@ void GameData::LoadShaders(bool useShaderSwizzle)
 	RingShader::Init();
 	SpriteShader::Init(useShaderSwizzle);
 	BatchShader::Init();
+	TextureShader::Init();
 
 	background.Init(16384, 4096);
 }

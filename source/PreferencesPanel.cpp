@@ -100,8 +100,14 @@ PreferencesPanel::PreferencesPanel()
 		{
 			selectedPlugin = plugin.first;
 		}
+		Point topLeft = aboutBox.TopLeft();
+		const Sprite *sprite = SpriteSet::Get(plugin.second.name);
+		if(sprite)
+		{
+			topLeft.Y() += sprite->Height() + 10.;
+		}
 
-		TextPane *pluginAboutPane = new TextPane(aboutBox.TopLeft(), aboutBox.Width(), "", 14, "medium");
+		TextPane *pluginAboutPane = new TextPane(topLeft, aboutBox.Width(), "", 14, "medium", "dim");
 		pluginAboutPane->SetText(plugin.second.aboutText.empty() ? EMPTY : plugin.second.aboutText);
 		auto *pluginAboutScroller = pluginPanes.Get(plugin.first);
 		pluginAboutScroller->SetChild(pluginAboutPane);
@@ -889,10 +895,6 @@ void PreferencesPanel::DrawPlugins()
 			}
 
 			pluginPanes.Get(selectedPlugin)->Draw();
-//			WrappedText wrap(font);
-//			wrap.SetWrapWidth(MAX_TEXT_WIDTH);
-//			wrap.Wrap(plugin.aboutText.empty() ? EMPTY : plugin.aboutText);
-//			wrap.Draw(top, medium);
 		}
 	}
 }
