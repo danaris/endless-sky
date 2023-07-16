@@ -43,7 +43,8 @@ TextPane::TextPane(Point topLeft, int width, string text, int fontSize, string t
 	const Font &font = FontSet::Get(fontSize);
 	this->textWrap = WrappedText(font);
 	this->textWrap.SetWrapWidth(width);
-	textWrap.Wrap(text);
+	this->textWrap.Wrap(text);
+	this->size = Point(width, this->textWrap.Height());
 	
 	this->textColorName = textColor;
 	this->backgroundColorName = backgroundColor;
@@ -112,7 +113,9 @@ void TextPane::Render()
 	Point textTopLeft = Screen::ESPoint(glTextTopLeft);
 	Point center = Point(size.X() / 2, size.Y() / 2);
 	FillShader::Fill(center, size, backColor);
+	UI::HandleGLError("F2", __FILE__, to_string(__LINE__));
 	textWrap.Draw(textTopLeft, textColor); //topLeft
+	UI::HandleGLError("G0", __FILE__, to_string(__LINE__));
 	Logger::LogError("Text top left at (" + to_string(textTopLeft.X()) + ", " + to_string(textTopLeft.Y()) + ")");
 	UI::HandleGLError("G", __FILE__, to_string(__LINE__));
 	
@@ -134,7 +137,7 @@ void TextPane::Draw() {
 //					  //0,0,(GLint)Screen::Width()*2, (GLint)Screen::Height()*2,
 //					  glBottomLeft.X(),glBottomLeft.Y(),glBottomLeft.X() + glSize.X(),glBottomLeft.Y() + glSize.Y(),
 //					  GL_COLOR_BUFFER_BIT, GL_LINEAR);
-	TextureShader::Draw(textureName, bottomLeft);
+	TextureShader::Draw(textureName, bottomLeft, size);
 	UI::HandleGLError("J", __FILE__, to_string(__LINE__));
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
 	UI::HandleGLError("K", __FILE__, to_string(__LINE__));
@@ -159,6 +162,7 @@ void TextPane::SetText(string newText)
 {
 	text = newText;
 	textWrap.Wrap(text);
+	this->size = Point(width, this->textWrap.Height());
 	Render();
 }
 

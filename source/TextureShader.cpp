@@ -30,6 +30,7 @@ namespace {
 	Shader shader;
 	GLint scaleI;
 	GLint positionI;
+	GLint transformI;
 
 	GLuint vao;
 	GLuint vbo;
@@ -44,12 +45,13 @@ void TextureShader::Init()
 		"precision mediump float;\n"
 		"uniform vec2 scale;\n"
 		"uniform vec2 position;\n"
+		"uniform mat2 transform;\n"
 
 		"in vec2 vert;\n"
 		"out vec2 fragTexCoord;\n"
 
 		"void main() {\n"
-		"  gl_Position = vec4((vert + position) * scale, 0, 1);\n"
+		"  gl_Position = vec4((transform * vert + position) * scale, 0, 1);\n"
 		"  vec2 texCoord = vert + vec2(.5, .5);\n"
 		"  fragTexCoord = vec2(texCoord.x, texCoord.y);\n"
 		"}\n";
@@ -75,6 +77,7 @@ void TextureShader::Init()
 	shader = Shader(vertexCode, fragmentCode);
 	scaleI = shader.Uniform("scale");
 	positionI = shader.Uniform("position");
+	transformI = shader.Uniform("transform");
 
 	glUseProgram(shader.Object());
 	glUniform1i(shader.Uniform("tex"), 0);
@@ -106,17 +109,21 @@ void TextureShader::Init()
 
 
 
-void TextureShader::Draw(const GLuint textureName, const Point &position)
+void TextureShader::Draw(const GLuint textureName, const Point &position, const Point &size)
 {
 	glUseProgram(shader.Object());
 	UI::HandleGLError("TS-A", __FILE__, to_string(__LINE__));
 	glBindVertexArray(vao);
 	UI::HandleGLError("TS-B", __FILE__, to_string(__LINE__));
 
-	GLfloat scale[2] = {2.f / Screen::Width(), -2.f / Screen::Height()};
+	GLfloat scale[2] = {Screen::Width() * 2.f, Screen::Height() * 2.f};
 	glUniform2fv(scaleI, 1, scale);
+	Point glSize = Screen::GLSize(size);
+	GLfloat transform[4] = {static_cast<float>(glSize.X()), 0.f, 0.f, static_cast<float>(glSize.Y())};
+	glUniformMatrix2fv(transformI, 1, false, transform);
 	UI::HandleGLError("TS-C", __FILE__, to_string(__LINE__));
 	
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, textureName);
 	UI::HandleGLError("TS-D", __FILE__, to_string(__LINE__));
 

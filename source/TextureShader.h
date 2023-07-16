@@ -29,7 +29,7 @@ class TextureShader {
 public:
 	static void Init();
 	//static void Texture(const Point &bottomLeft, const Point &size, GLuint textureName);
-	static void Draw(const GLuint textureName, const Point &position);
+	static void Draw(const GLuint textureName, const Point &position, const Point &size);
 };
 
 

@@ -17,6 +17,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 
 #include "DisplayText.h"
 #include "Font.h"
+#include "../UI.h"
 
 #include <cstring>
 
@@ -157,7 +158,10 @@ void WrappedText::Draw(const Point &topLeft, const Color &color) const
 
 	if(truncate == Truncate::NONE)
 		for(const Word &w : words)
+		{
 			font->Draw(text.c_str() + w.Index(), w.Pos() + topLeft, color);
+			UI::HandleGLError("G1", __FILE__, to_string(__LINE__));
+		}
 	else
 	{
 		// Currently, we only apply truncation to a line if it contains a single word.
@@ -166,12 +170,19 @@ void WrappedText::Draw(const Point &topLeft, const Color &color) const
 		{
 			const Word &w = words[i];
 			if(h == w.y && (i != words.size() - 1 && w.y == words[i + 1].y))
+			{
 				font->Draw(text.c_str() + w.Index(), w.Pos() + topLeft, color);
+				UI::HandleGLError("G2", __FILE__, to_string(__LINE__));
+			}
 			else
+			{
 				font->Draw({text.c_str() + w.Index(), {wrapWidth, truncate}}, w.Pos() + topLeft, color);
+				UI::HandleGLError("G3", __FILE__, to_string(__LINE__));
+			}
 			h = w.y;
 		}
 	}
+	UI::HandleGLError("G4", __FILE__, to_string(__LINE__));
 }
 
 
