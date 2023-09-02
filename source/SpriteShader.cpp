@@ -19,6 +19,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include "Screen.h"
 #include "Shader.h"
 #include "Sprite.h"
+#include "UI.h"
 
 #include <sstream>
 #include <vector>
@@ -348,17 +349,26 @@ void SpriteShader::Bind()
 
 void SpriteShader::Add(const Item &item, bool withBlur)
 {
+	UI::HandleGLError("SSA 0", __FILE__, std::to_string(__LINE__));
 	glBindTexture(GL_TEXTURE_2D_ARRAY, item.texture);
+	UI::HandleGLError("SSA 1", __FILE__, std::to_string(__LINE__));
 
 	glUniform1f(frameI, item.frame);
+	UI::HandleGLError("SSA 2", __FILE__, std::to_string(__LINE__));
 	glUniform1f(frameCountI, item.frameCount);
+	UI::HandleGLError("SSA 3", __FILE__, std::to_string(__LINE__));
 	glUniform2fv(positionI, 1, item.position);
+	UI::HandleGLError("SSA 4", __FILE__, std::to_string(__LINE__));
 	glUniformMatrix2fv(transformI, 1, false, item.transform);
+	UI::HandleGLError("SSA 5", __FILE__, std::to_string(__LINE__));
 	// Special case: check if the blur should be applied or not.
 	static const float UNBLURRED[2] = {0.f, 0.f};
 	glUniform2fv(blurI, 1, withBlur ? item.blur : UNBLURRED);
+	UI::HandleGLError("SSA 6", __FILE__, std::to_string(__LINE__));
 	glUniform1f(clipI, item.clip);
+	UI::HandleGLError("SSA 7", __FILE__, std::to_string(__LINE__));
 	glUniform1f(alphaI, item.alpha);
+	UI::HandleGLError("SSA 8", __FILE__, std::to_string(__LINE__));
 
 	// Bounds check for the swizzle value:
 	int swizzle = (static_cast<size_t>(item.swizzle) >= SWIZZLE.size() ? 0 : item.swizzle);
@@ -367,8 +377,10 @@ void SpriteShader::Add(const Item &item, bool withBlur)
 		glUniform1i(swizzlerI, swizzle);
 	else
 		glTexParameteriv(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_SWIZZLE_RGBA, SWIZZLE[swizzle].data());
-
+	
+	UI::HandleGLError("SSA 9", __FILE__, std::to_string(__LINE__));
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	UI::HandleGLError("SSA 10", __FILE__, std::to_string(__LINE__));
 }
 
 

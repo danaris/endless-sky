@@ -107,8 +107,8 @@ PreferencesPanel::PreferencesPanel()
 			topLeft.Y() += sprite->Height() + 10.;
 		}
 
-		TextPane *pluginAboutPane = new TextPane(topLeft, aboutBox.Width(), "", 14, "medium", "dim");
-		pluginAboutPane->SetText(plugin.second.aboutText.empty() ? EMPTY : plugin.second.aboutText);
+		TextPane *pluginAboutPane = new TextPane(topLeft, aboutBox.Width(), plugin.second.aboutText.empty() ? EMPTY : plugin.second.aboutText, 14, "medium", "dim");
+		//pluginAboutPane->SetText(plugin.second.aboutText.empty() ? EMPTY : plugin.second.aboutText);
 		auto *pluginAboutScroller = pluginPanes.Get(plugin.first);
 		pluginAboutScroller->SetChild(pluginAboutPane);
 		pluginAboutScroller->SetTopLeft(aboutBox.TopLeft());
@@ -117,6 +117,30 @@ PreferencesPanel::PreferencesPanel()
 	}
 
 	SetIsFullScreen(true);
+}
+
+ScrollPane *PreferencesPanel::PrepSelectedPlugin()
+{
+	const Interface *pluginInterface = GameData::Interfaces().Get("plugins");
+	Rectangle aboutBox = pluginInterface->GetBox("About Plugin");
+	static const string EMPTY = "(No description given.)";
+	
+	Point topLeft = aboutBox.TopLeft();
+	const Plugin *plugin = Plugins::Get().Get(selectedPlugin);
+	const Sprite *sprite = SpriteSet::Get(plugin->name);
+	if(sprite)
+	{
+		topLeft.Y() += sprite->Height() + 10.;
+	}
+	
+	TextPane *pluginAboutPane = new TextPane(topLeft, aboutBox.Width(), "", 14, "medium", "dim");
+	pluginAboutPane->SetText(plugin->aboutText.empty() ? EMPTY : plugin->aboutText);
+	ScrollPane *pluginAboutScroller = new ScrollPane();
+	pluginAboutScroller->SetChild(pluginAboutPane);
+	pluginAboutScroller->SetTopLeft(aboutBox.TopLeft());
+	pluginAboutScroller->SetSize(aboutBox.Dimensions());
+	
+	return pluginAboutScroller;
 }
 
 
@@ -182,10 +206,11 @@ bool PreferencesPanel::KeyDown(SDL_Keycode key, Uint16 mod, const Command &comma
 	{
 		page = key;
 		hoverItem.clear();
+		ScrollPane *selectedPluginPane = PrepSelectedPlugin();
 		if(page == 'p')
-			GetUI()->Push(pluginAboutScroller);
+			GetUI()->Push(selectedPluginPane);
 		else
-			GetUI()->Pop(pluginAboutScroller);
+			GetUI()->Pop(selectedPluginPane);
 	}
 	else if(key == 'o' && page == 'p')
 		Files::OpenUserPluginFolder();
@@ -312,8 +337,8 @@ bool PreferencesPanel::Click(int x, int y, int clicks)
 //			ScrollPane *oldPane = pluginPanes.Get(selectedPlugin);
 //			GetUI()->Pop(oldPane);
 			selectedPlugin = zone.Value();
-//			ScrollPane *newPane = pluginPanes.Get(selectedPlugin);
-//			GetUI()->Push(newPane);
+			ScrollPane *newPane = PrepSelectedPlugin();
+			GetUI()->Push(newPane);
 			for(const auto &it : Plugins::Get())
 			{
 				const auto &plugin = it.second;

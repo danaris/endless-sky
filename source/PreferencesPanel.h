@@ -58,6 +58,8 @@ private:
 	void DrawTooltips();
 
 	void Exit();
+	
+	ScrollPane *PrepSelectedPlugin();
 
 
 private:

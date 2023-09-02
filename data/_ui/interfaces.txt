@@ -532,7 +532,7 @@ interface "plugins"
 	box "About Plugin"
 		from 0 0
 		align top left
-		dimensions 2048 1024
+		dimensions 300 600
 
 
 interface "preferences"

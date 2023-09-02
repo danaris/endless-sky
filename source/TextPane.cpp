@@ -26,6 +26,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include "GameData.h"
 #include "Screen.h"
 #include "FillShader.h"
+#include "SpriteShader.h"
 #include "TextureShader.h"
 #include "UI.h"
 
@@ -122,6 +123,8 @@ void TextPane::Render()
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	UI::HandleGLError("H", __FILE__, to_string(__LINE__));
+	
+	Logger::LogError("Text Pane rendering text [" + this->text.substr(0, 10) + "] to texture " + to_string(textureName));
 }
 
 void TextPane::Draw() {
@@ -130,18 +133,37 @@ void TextPane::Draw() {
 	Point glBottomLeft = Screen::GLPoint(bottomLeft);
 	Point glSize = Screen::GLSize(size);
 	//Logger::LogError("Text Pane drawing with GL bottom left (" + to_string(glBottomLeft.X()) + ", " + to_string(glBottomLeft.Y()) + ") and GL size " + to_string(glSize.X()) + "x" + to_string(glSize.Y()) + " and screen size " + to_string((GLint)Screen::Width()*2) + "x" + to_string((GLint)Screen::Height()*2));
-	glViewport(glBottomLeft.X(),glBottomLeft.Y(),glSize.X(),glSize.Y());
-	glBindFramebuffer(GL_READ_FRAMEBUFFER, framebufferName);
-	UI::HandleGLError("I", __FILE__, to_string(__LINE__));
+//	glViewport(glBottomLeft.X(),glBottomLeft.Y(),glSize.X(),glSize.Y());
+//	glBindFramebuffer(GL_READ_FRAMEBUFFER, framebufferName);
+//	UI::HandleGLError("I", __FILE__, to_string(__LINE__));
 //	glBlitFramebuffer(0,0,glSize.X(),glSize.Y(),//(GLint)Screen::Width()*2, (GLint)Screen::Height()*2,//
 //					  //0,0,(GLint)Screen::Width()*2, (GLint)Screen::Height()*2,
 //					  glBottomLeft.X(),glBottomLeft.Y(),glBottomLeft.X() + glSize.X(),glBottomLeft.Y() + glSize.Y(),
 //					  GL_COLOR_BUFFER_BIT, GL_LINEAR);
-	TextureShader::Draw(textureName, bottomLeft, size);
-	UI::HandleGLError("J", __FILE__, to_string(__LINE__));
-	glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
-	UI::HandleGLError("K", __FILE__, to_string(__LINE__));
-	glViewport(0, 0, Screen::Width()*2, Screen::Height()*2);
+	SpriteShader::Item item;
+	item.texture = textureName;
+	item.frame = 0;
+	item.frameCount = 1;
+	item.position[0] = 0.f;
+	item.position[1] = 0.f;
+	item.transform[0] = glSize.X();
+	item.transform[3] = -glSize.Y();
+	item.swizzle = 0;
+	Logger::LogError("Text Pane drawing from texture " + to_string(textureName));
+
+	SpriteShader::Bind();
+	UI::HandleGLError("TextPane A", __FILE__, std::to_string(__LINE__));
+	SpriteShader::Add(item);
+	UI::HandleGLError("TextPane B", __FILE__, std::to_string(__LINE__));
+	SpriteShader::Unbind();
+	UI::HandleGLError("TextPane C", __FILE__, std::to_string(__LINE__));
+	Logger::LogError("Texture " + to_string(textureName) + " drawing complete.");
+	
+//	TextureShader::Draw(textureName, bottomLeft, size);
+//	UI::HandleGLError("J", __FILE__, to_string(__LINE__));
+//	glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
+//	UI::HandleGLError("K", __FILE__, to_string(__LINE__));
+//	glViewport(0, 0, Screen::Width()*2, Screen::Height()*2);
 }
 
 bool TextPane::Drag(double dx, double dy) {

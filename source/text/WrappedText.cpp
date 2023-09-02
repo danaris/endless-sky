@@ -314,7 +314,7 @@ void WrappedText::Wrap()
 	// Adjust the spacing of words in the final line of text.
 	AdjustLine(lineBegin, lineWidth, true);
 
-	height = word.y;
+	height = max(lineHeight, word.y);
 }
 
 
