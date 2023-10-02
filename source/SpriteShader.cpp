@@ -351,7 +351,7 @@ void SpriteShader::Add(const Item &item, bool withBlur)
 {
 	UI::HandleGLError("SSA 0", __FILE__, std::to_string(__LINE__));
 	glBindTexture(GL_TEXTURE_2D_ARRAY, item.texture);
-	UI::HandleGLError("SSA 1", __FILE__, std::to_string(__LINE__));
+	UI::HandleGLError("SSA 1 (probably invalid texture passed)", __FILE__, std::to_string(__LINE__));
 
 	glUniform1f(frameI, item.frame);
 	UI::HandleGLError("SSA 2", __FILE__, std::to_string(__LINE__));

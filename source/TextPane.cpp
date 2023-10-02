@@ -54,7 +54,8 @@ TextPane::TextPane(Point topLeft, int width, string text, int fontSize, string t
 	Logger::LogError("Screen size is " + to_string(Screen::Width()) + "x" + to_string(Screen::Height()));
 	Logger::LogError("Text Pane initialized with top left (" + to_string(topLeft.X()) + ", " + to_string(topLeft.Y()) + ") and size " + to_string(width) + "x" + to_string(textWrap.Height()));
 	
-	Render();
+	if (this->textWrap.Height() > 0)
+		Render();
 }
 
 void TextPane::Render()
@@ -74,7 +75,7 @@ void TextPane::Render()
 	glBindTexture(GL_TEXTURE_2D, textureName);
 	UI::HandleGLError("B", __FILE__, to_string(__LINE__));
 	
-	glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, glSize.X(), glSize.Y(), 0,GL_RGB, GL_UNSIGNED_BYTE, 0);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, glSize.X(), glSize.Y(), 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
 	UI::HandleGLError("C", __FILE__, to_string(__LINE__));
 	
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -104,10 +105,12 @@ void TextPane::Render()
 //	Logger::LogError("Background from (" + to_string(fillCenter.X()) + ", " + to_string(fillCenter.Y()) + ") at " + to_string(fillSize.X()) + "x" + to_string(fillSize.Y()));
 //	Logger::LogError("Background GL from (" + to_string(glFillCenter.X()) + ", " + to_string(glFillCenter.Y()) + ") at " + to_string(glWidth) + "x" + to_string(glHeight));
 //	
-//	GLint viewport[4];
-//	glGetIntegerv(GL_VIEWPORT, viewport);
+	GLint viewport[4];
+	glGetIntegerv(GL_VIEWPORT, viewport);
 //	Logger::LogError("GL Viewport from (" + to_string(viewport[0]) + ", " + to_string(viewport[1]) + ") at " + to_string(viewport[2]) + "x" + to_string(viewport[3]));
 	
+	glViewport(0, 0, glSize.X(), glSize.Y());
+
 	const Color &textColor = *GameData::Colors().Get(textColorName);
 	const Color &backColor = *GameData::Colors().Get(backgroundColorName);
 	Point glTextTopLeft = Point(0, glSize.Y());
@@ -123,6 +126,7 @@ void TextPane::Render()
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	UI::HandleGLError("H", __FILE__, to_string(__LINE__));
+	glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
 	
 	Logger::LogError("Text Pane rendering text [" + this->text.substr(0, 10) + "] to texture " + to_string(textureName));
 }
@@ -133,7 +137,7 @@ void TextPane::Draw() {
 	Point glBottomLeft = Screen::GLPoint(bottomLeft);
 	Point glSize = Screen::GLSize(size);
 	//Logger::LogError("Text Pane drawing with GL bottom left (" + to_string(glBottomLeft.X()) + ", " + to_string(glBottomLeft.Y()) + ") and GL size " + to_string(glSize.X()) + "x" + to_string(glSize.Y()) + " and screen size " + to_string((GLint)Screen::Width()*2) + "x" + to_string((GLint)Screen::Height()*2));
-//	glViewport(glBottomLeft.X(),glBottomLeft.Y(),glSize.X(),glSize.Y());
+	glViewport(glBottomLeft.X(),glBottomLeft.Y(),glSize.X(),glSize.Y());
 //	glBindFramebuffer(GL_READ_FRAMEBUFFER, framebufferName);
 //	UI::HandleGLError("I", __FILE__, to_string(__LINE__));
 //	glBlitFramebuffer(0,0,glSize.X(),glSize.Y(),//(GLint)Screen::Width()*2, (GLint)Screen::Height()*2,//
@@ -144,12 +148,12 @@ void TextPane::Draw() {
 	item.texture = textureName;
 	item.frame = 0;
 	item.frameCount = 1;
-	item.position[0] = 0.f;
+	item.position[0] = glSize.X() / 2;//0.f;
 	item.position[1] = 0.f;
 	item.transform[0] = glSize.X();
-	item.transform[3] = -glSize.Y();
+	item.transform[3] = glSize.Y();
 	item.swizzle = 0;
-	Logger::LogError("Text Pane drawing from texture " + to_string(textureName));
+	Logger::LogError("Text Pane text [" + this->text.substr(0, 10) + "] drawing from texture " + to_string(textureName));
 
 	SpriteShader::Bind();
 	UI::HandleGLError("TextPane A", __FILE__, std::to_string(__LINE__));
@@ -163,7 +167,7 @@ void TextPane::Draw() {
 //	UI::HandleGLError("J", __FILE__, to_string(__LINE__));
 //	glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
 //	UI::HandleGLError("K", __FILE__, to_string(__LINE__));
-//	glViewport(0, 0, Screen::Width()*2, Screen::Height()*2);
+	glViewport(0, 0, Screen::Width()*2, Screen::Height()*2);
 }
 
 bool TextPane::Drag(double dx, double dy) {
