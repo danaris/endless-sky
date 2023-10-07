@@ -77,6 +77,8 @@ private:
 
 	// Cache flight checks to not calculate them twice before each takeoff.
 	std::map<const std::shared_ptr<Ship>, std::vector<std::string>> flightChecks;
+
+	bool ignoredRepair = false;
 };
 
 

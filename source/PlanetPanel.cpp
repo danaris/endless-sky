@@ -113,7 +113,7 @@ void PlanetPanel::Step()
 			}
 		}
 
-		if((wreckedFighters + wreckedDrones) > 0)
+		if((wreckedFighters + wreckedDrones) > 0 && !ignoredRepair)
 		{
 			ostringstream out;
 
@@ -132,7 +132,10 @@ void PlanetPanel::Step()
 				else
 					repairWord += to_string(wreckedDrones) + " drones";
 			}
-			out << "You have a total of " << repairWord << " that were wrecked in combat. In total, it will cost " + to_string(repairCosts) + " credits to make repairs.";
+			string wasWord = "were";
+			if(wreckedDrones + wreckedFighters == 1)
+				wasWord = "was";
+			out << "You have a total of " << repairWord << " that " << wasWord << " wrecked in combat. In total, it will cost " + Format::CreditString(repairCosts) + " credits to make repairs.";
 			
 			if(player.Accounts().Credits() >= repairCosts)
 				GetUI()->Push(new Dialog(this, &PlanetPanel::DoRepairWreckedFighters,
@@ -140,7 +143,7 @@ void PlanetPanel::Step()
 			else
 				GetUI()->Push(new Dialog(out.str() + " You cannot currently afford repairs."));
 
-			
+			ignoredRepair = true;
 		}
 	}
 }
