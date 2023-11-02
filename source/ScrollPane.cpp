@@ -48,8 +48,12 @@ ScrollPane::ScrollPane(Point topLeft, Point size, Pane *child) {
 	SetTrapAllEvents(false);
 }
 
+void ScrollPane::Render() {
+	child->Render();
+}
+
 void ScrollPane::Draw() {
-	
+	Render();
 	double bottom = size.Y() + topLeft.Y();
 	double scrollBottom = bottom + scroll;
 	Point bottomLeft = Point(topLeft.X(), scrollBottom);

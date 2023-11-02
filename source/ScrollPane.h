@@ -34,6 +34,8 @@ public:
 	virtual bool Scroll(double dx, double dy) override;
 	void SetChild(Pane *newChild);
 
+	virtual void Render() override;
+
 protected:
 	// Only override the ones you need; the default action is to return false.
 	virtual bool Drag(double dx, double dy) override;

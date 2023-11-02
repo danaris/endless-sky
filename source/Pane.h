@@ -31,6 +31,7 @@ public:
 	void SetSize(Point newSize);
 	virtual std::string PanelType() const override;
 	Rectangle Bounds();
+	virtual void Render() = 0;
 protected:
 	Point topLeft;
 	Point size;
