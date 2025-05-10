@@ -2100,36 +2100,10 @@ mission "FW Defend New Tibet"
 			`	You look back at the video screen to see that the monk is gone, replaced by a man in a Syndicated Security uniform. "Greetings, Councilmembers. I'm sorry for the confusion, but please understand. We're hunting a terrorist. This man claiming that we are the ones that caused the bombings is, in fact, the leader of the extremist group that caused them. He developed the nukes with the help of a faction of pirates looking to profit from the instability, and now, when we're finally close to capturing him, he's attempting to frame us for his own crimes against humanity. Allow us to find him, and we'll-"`
 			`	The feed cuts off. "The message ended there," the communications officer says. The room falls silent.`
 			`	JJ breaks the silence. "I still say we rescue this defector. The Syndicate could be lying to us. They don't exactly have a reputation for upstanding morality, after all."`
-			`	"Or this 'defector' could easily be the one lying," Freya says. "I say we let them have him while we focus on defending against the Navy. If the Syndicate gets their hands on the true terrorist, their support will surely clear our name. Parliament won't be able to ignore the Syndicate vindicating us."`
-			`	As the third Council member present, you have the deciding vote, and the entire course of this war may rest on your decision.`
-			choice
-				`	"I say we rescue the defector, even if it means war with the Syndicate."`
-					goto rescue
-				`	"I say we let the Syndicate have the terrorist, and focus on winning the battle against the Republic."`
-					goto surrender
-			label rescue
-			`	"Are you sure?" asks Freya. "The Syndicate has done a lot for us in the past."`
-			choice
-				`	"Yes, I'm sure. We rescue the defector."`
-					goto "definitely rescue"
-				`	"Fine, we'll hand him over. But I don't think it's the right thing to do."`
-					goto "definitely surrender"
-			label surrender
-			`	"If Katya were here," says JJ, "she would tell us to choose justice over political expedience."`
-			choice
-				`	"Well, she's not here, and I say we can't afford to lose the Syndicate as an ally."`
-					goto "definitely surrender"
-				`	"I suppose you're right. Let's mount a rescue operation."`
-					goto "definitely rescue"
-			
-			label "definitely surrender"
-			action
-				set "fw did not rescue defector"
-			`	"Very well," says JJ. "In that case, we'll need to meet with the fleet captains and figure out how to take on the Navy. Let's meet in the spaceport bar in an hour."`
-				decline
-			
-			label "definitely rescue"
-			`	JJ seems very relieved at your choice. "I think that's the right choice, Captain," he says. "We can take the fleet we have here, sweep up north to avoid the thickest part of the Navy's occupying fleet, and cut over to New Tibet to question the Syndicate in person."`
+			`	"Or this 'defector' could be the one lying," Freya says. She sits in silent for a minute.`
+			`	"If Katya were here," says JJ, "she would tell us to choose justice over political expediency."`
+			`	"Well, she's not here," Freya returns grimly. "But...you're right about the Syndicate's reputation. I don't like gambling this way, but we really should be working with all the information available to us. Let's go rescue him."`
+			`	JJ seems relieved at Freya's acquiescence. "I think that's the right choice." He turns to you. "We can take the fleet we have here, sweep up north to avoid the thickest part of the Navy's occupying fleet, and cut over to New Tibet to question the Syndicate in person."`
 				accept
 	
 	on accept
@@ -2186,49 +2160,79 @@ mission "FW Defend New Tibet"
 				`	(Give up and contact the rest of the Free Worlds fleet to figure out what to do next.)`
 					goto leave
 			`	You wait around for a while, but this mountain valley seems to be entirely desolate. Then finally, when you are about to give up hope, Freya spots the distant figures of a few dozen people coming down the side of one of the mountains.`
-				goto gunboat
+				goto questioning
 			label leave
 			`	You are just about to leave when Freya spots something and points. "Look," she says, "someone is coming down the mountain slope toward us." Sure enough, it's a group of several dozen people wearing the distinctive robes of the monks.`
-			label gunboat
-			`	As you wait for them to approach, JJ receives a message from one of the militia crews. "Sir, you have incoming! A scout ship, with Republic markings. Apparently unarmed. Shall we intercept them?"`
-			`	"Oathkeepers?" asks JJ. "Or ordinary Navy? Who are they?"`
-			`	The voice on the other end pauses. "Neither. Navy Intelligence."`
-			`	JJ thinks about that for a second, then says, "Let them land. But follow them down, and if you see so much as a hint of them powering up weapons, blow them out of the sky. Understand?" The officer acknowledges his order and signs off.`
-			`	As the group of monks approaches from the mountainside, the scout ship comes in for a landing and skids to a halt in the dirt a few dozen meters away. A woman steps off it. She has dark skin, and is dressed entirely in black. Even the whites of her eyes are black: when she gets closer, you can see that it is actually a scleric tattoo, an intricate Celtic knotwork pattern inked into the whites of her eyes. She sees you staring at her, and winks at you with a friendly grin.`
-			choice
-				`	"I'm Captain <last> of the Free Worlds. What is your business here?"`
-				`	"Who are you, and what gives you the right to land on our planet?"`
-					goto hostile
-			`	"My name is Raven," she says. "I'm here to question this defector. If he is telling the truth, our war with you will end today." She pauses, then adds, grimly, "And, another war will begin."`
-				goto questioning
-			label hostile
-			`	She frowns. "My name is Raven," she says. "I am here to question this defector. If you are interested in knowing the truth, you will allow me to do so."`
 			label questioning
-			`	The monks approach, and you see that among them is a man in more ordinary attire, who must be the defector. "Now," says Raven, "I will question him alone, on my ship."`
-			choice
-				`	"No, we insist on being present for your interrogation."`
-					goto present
-				`	"Very well, we'll wait outside."`
-			`	"No!" says JJ. "We're staying here."`
-			label present
-			`	She hesitates for a long moment. This is probably going against whatever orders she is following. But finally she says, "Very well." The monks step aside. She approaches the defector, and reaches out her hands to him. Hesitantly, he takes her hands. It's an oddly intimate scene, the two of them quietly holding hands and locking eyes - not like any interrogation you have seen before. "Now," she says, "tell me your story."`
-			`	"My name is Sawyer," says the man. "I'm a physicist, a Syndicate employee. We had a secret project on Mutiny, a planet in a pirate system. We were developing nuclear weapons." He hesitates, and looks away for a second, then says, "They told me it was for fighting the pirates. I didn't realize otherwise until--"`
-			`	"That is a lie," says Raven, calmly.`
-			`	He seems flustered. "Okay, they didn't tell me what the weapons were for, and I didn't ask."`
+			`	The monks approach, and you see that among them is a man in more ordinary attire, who must be the defector. JJ approaches him and folds his arms. "Now," he says, "let's hear what you have to say."`
+			`	"My name is Sawyer," says the man. "I'm a physicist, a Syndicate employee. We had a secret project on Mutiny, a planet in a pirate system. We were developing nuclear weapons." He hesitates, and looks away for a second, then says, "They told me it was for fighting the pirates. I didn't realize otherwise until--no. That's not true. They didn't tell me what the weapons were for, and I didn't ask."`
 			choice
 				`	"Why would the Syndicate attack the Republic?"`
 				`	"Why did you wait so long to report this?"`
 					goto wait
 			`	They both seem surprised at you asking a question. Sawyer says, "War is good for business, especially if you're in the business of making weapons. The Syndicate's profits have more than doubled since this conflict began."`
-			`	"What led you to report this?" asks Raven.`
+			`	"What led you to report this?" asks JJ.`
 			label wait
 			`	He says, "It was when I heard that there had been another major battle. Up until then I had been telling myself that the worst of the damage was done. But after that battle, I knew that millions more could die because of our crime, and that I had the power to stop it."`
-			`	Raven continues to ask questions: who was involved, how the facility was hidden, where the raw materials came from. At one point, JJ pulls you aside and says, "She must be a Questioner. How they operate is a tightly kept secret. I'd always assumed their methods were... a bit more medieval."`
-			`	Finally, Raven is satisfied, and radios her ship. "He's telling the truth," she tells them. "Send word to the admirals at once. And, release the captive."`
-			`	The door of her ship slides open, and another woman steps out - shakily, hesitantly, shielding her eyes against the sunlight. It takes you a few seconds to realize that it's Katya.`
-			`	As you all rush over to greet Katya, Raven taps your shoulder and says quietly, "Meet me in the main spaceport in a few hours and we'll figure out what's going to happen next." She returns to her ship.`
+			`	JJ continues to ask questions: who was involved, how the facility was hidden, where the raw materials came from.`
+			`	Finally, he sighs. "All right. I think that's enough for now. Let's reconvene in the main spaceport in a few hours to figure out what we do with this information."`
 
 
+mission "FW Decision Time"
+	name "Seeking Justice"
+	description "Take JJ to <destination>, where there is an outpost of Naval Intelligence with someone who might be willing to talk to him about the Questioners."
+	autosave
+	source "New Tibet"
+	destination "Heartland"
+	to offer
+		has "FW Defend New Tibet: done"
+	
+	on offer
+		conversation
+			`When you enter the spaceport a few hours after the questioning of the defector, you find that Alondo is there alongside Freya and JJ. They wave you over with expressions that mix relief and apprehension. "Alondo just got in from Bourne, which is lucky timing," Freya explains. "We've brought him up to speed on what we know so far."`
+	`	Alondo shakes his head. "To think that the bombings were done just to increase profits, of all things. But the problem is, we have no proof of any of this." The rest of them nod worriedly.`
+	`	"Well, it seems to me there are two possible ways forward, then," Freya says. "Option one: we try to get into the Syndicate to find some proof of Sawyer's story. Option two: we just keep up the war against the Republic, finding some kind of edge to let us actually win the war militarily."`
+	`	JJ raises a finger. "There...is a third option, actually. We could contact the Questioners. If we could get one of them to speak to Sawyer and verify the truth of his story, that should be enough proof for Naval Intelligence, and they could then convince Parliament to end the war."`
+	`	The other two look at him like he has suddenly grown an extra head. "The Questioners? Are you telling me they're actually...real?" Alondo asks.`
+	`	"They are," confirms JJ. "I haven't personally witnessed their abilities, but I have spoken to people I trust who have. More importantly, Naval Intelligence fully believes in their abilities. The problem, of course, would be finding one and getting them to come talk to Sawyer."`
+	`	"We certainly shouldn't bring Sawyer into the Republic," Freya says. The other two nod. "So that would be three options. But the problem with option one is that we don't really know what we would even be looking for." She falls silent, thinking.`
+	`	Alondo speaks up, "Then let's focus on the other two options for now. For JJ's option, we'd have to find our way into the Republic carefully and somehow get a meeting with someone in Naval Intelligence. What would we need for the other option?"`
+	`	Freya nods. "An advantage, which could be improved technology or an ally of some sort. JJ, didn't you say Tomek had some contacts with a group calling itself the 'Wolf Pack'?"`
+	`	"Yes...they're not at all my first choice of ally, but they might be our best hope right now. And they should have contacts of their own that might be willing to lend some extra muscle, for the right price. But...well, to be perfectly blunt, that would mean working with pirates, and I really don't like that option."`
+	`	Alondo shakes his head. "I understand, but the alternative right now is trying to conduct an incredibly-dangerous stealth mission into enemy territory to meet with people who might not even want to let us know they really exist. Freya, what do you say?"`
+	`	Freya sits in thought for nearly a full minute before replying. "I don't know. I share your concerns about the feasibility of contacting the Questioners, but I'm also very, very reluctant to work with pirates, even if it means the difference between victory and defeat. The price they ask might well be more than we can pay and still look ourselves in the mirror."`
+	`	She turns to you. "With Katya still in captivity and Tomek gone, we four are the whole Council right now. I...will abstain, but support whatever choice you make as the deciding vote, Captain <last>." Now all of them are looking at you. The entire course of the war may rest on your shoulders now.`
+	choice
+		`	"I say we find the Questioners and prove our innocence. We need to have real justice."`
+			goto justice
+		`	"I say we reach out to the Wolf Pack and whatever pirates they may know. We need to win this war."`
+			goto victory
+	
+	label justice
+	`	"Are you sure?" asks Alondo. "Remember that we don't even know if they'd talk to us."`
+	choice
+		`	"Yes, I'm sure. We've gotten people to talk to us before, we can do it again."`
+			goto "definitely justice"
+		`	"I guess you're right. Let's try to work with the pirates."`
+			goto "definitely victory"
+	
+	label victory
+	`	"Are you sure?" asks JJ. "Think about what this would say about the Free Worlds' values."`
+	choice
+		`	"Yes, I'm sure. Our values won't help us much if we're all dead or in prison."`
+			goto "definitely victory"
+		`	"I guess you're right. Even if it's riskier, let's try to get real justice."`
+			goto "definitely justice"
+	
+	label "definitely justice"
+	`	JJ's face brightens. "I think that's the right choice. Now, we don't really stand much of a chance trying to sneak straight into Navy Intelligence Headquarters, so let's go to an outpost. There's probably still someone I know stationed at the outpost on <destination>. Take me there, and we can start our search for a Questioner to prove our innocence to the whole Republic."`
+		accept
+		
+	label "definitely victory"
+	`	Alondo smiles. "All right, then. I know that Tomek has been staying on Solace recently, so let's head there and start gathering some allies."`
+		decline
+
+		
 
 mission "FW Liberate Delta Sagittarii"
 	name "Liberate Delta Sagittarii"
