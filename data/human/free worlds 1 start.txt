@@ -1835,7 +1835,7 @@ mission "FW Early Warning 2"
 			`	"Which means they'll have noticed our own drop in presence there," says Tomek. "They know that we know that they're making moves to our north. Hopefully baiting us into recalling our patrols wasn't a part of their plan."`
 			`	"Well if our patrols are already friendly, perhaps we can talk ourselves out of another battle," says JJ.`
 			`	"<planet> has become something of a neutral zone," one of the militia officers jumps in, presumably one from the eastern patrols. "Navy and militia patrols pass each other by in the spaceport without incident. People from the Republic and Free Worlds who know each other meet there often. We could arrange a meeting there."`
-			`	"I'll travel there to speak with the Navy. Captain <last> shall be my transport," says JJ. "Tomek shall remain here with the fleet." Tomek nods in agreement. "Meeting dismissed."`
+			`	"I'll travel there to speak with the Navy. I know the admiral in charge of the southeast battlegroup here, Colin O'Brien. He's pretty levelheaded even for an admiral. I'll contact him to set up the meeting. Captain <last> shall be my transport," says JJ. "Tomek shall remain here with the fleet." Tomek nods in agreement. "Meeting dismissed."`
 			`	After the officers shuffle out, just you, JJ, and Tomek remain. JJ tells you to wait outside. "I want to speak with Tomek in private for a moment."`
 			`	You move outside the building and stand next to the doorway. From inside you can hear the mumbling of Tomek and JJ speaking. You could probably press your ear to the door to hear what's going on.`
 			choice
@@ -1872,26 +1872,28 @@ mission "FW Early Warning 3"
 		dialog `You have failed an essential Free Worlds mission. If you want to complete the story line, revert to the autosave or another earlier snapshot of the game.`
 	
 	on offer
-		log "People" "Ranulph Hines" "Ranulph Hines is a commander within the Republic Navy. While a competent leader, he has a reputation for disregarding many of the Navy's old traditions, instead preferring to do things his own way."
+		log "People" "Ranulph Hines" "Ranulph Hines was an officer of the Republic Navy who was later appointed to the position of Undersecretary of Defense for the Republic. While a competent leader, he has a reputation for disregarding many of the Navy's old traditions, instead preferring to do things his own way."
 		conversation
-			`When you arrive, you see that the local Navy and Free Worlds soldiers have already gathered in the spaceport, keeping their distance from one another. News of the meeting must have already spread through the ranks. You see some civilians continuing to go about their day, while others are standing around watching the soldiers, but even with all the soldiers and civilians, the streets feel empty; perhaps many of the civilians that would normally be here have sought out shelter in fear of violence.`
-			`	JJ speaks with a Navy officer, asking him who he'll be meeting to negotiate with. "Commander Ranulph Hines, sir." The officer responds, seeming to catch himself up on calling JJ "sir." JJ has a look of concern on his face, but you don't think it's because of the Navy officer calling him "sir."`
+			`When you arrive, you see that the local Navy and Free Worlds soldiers have already gathered in the spaceport, keeping their distance from one another. The soldiers on the Navy side are murmuring amongst themselves and casting frequent hostile glances toward the Free Worlds lines. They are clearly upset about some kind of recent news. You see some civilians continuing to go about their day, but even most of those look upset and worried. Despite their presence, the streets here feel empty; perhaps many of the civilians that would normally be here have sought out shelter in fear of violence.`
+			`	JJ speaks with a Navy officer, asking him what all the commotion is about. "Admiral O'Brien was killed while en route here, sir," the officer responds, seeming to catch himself up on calling JJ "sir". "Some kind of terrorist attack at the spaceport just before he boarded his flagship."`
+			`	JJ's mouth drops open in shock. "Dead? That's..." He recovers his composure quickly, though it's not hard to see that this news has affected him. "In that case, who is here to replace him in the negotiations?"`
+			`"Undersecretary of Defense Ranulph Hines, s-." The officer stops himself before letting the honorific out this time, but continues, "He had just met with the Admiral before the attack, so he already knew about the negotiations. He insisted on being the one to come in Admiral O'Brien's place." JJ looks grim at the mention of the Undersecretary's name.`
 			choice
 				`	"Is something wrong?"`
 				`	(Say nothing.)`
 					goto talk
 			`	"Nothing," JJ responds, then pauses before saying, "I fear this won't end well."`
 			label talk
-			`	The officer directs you and JJ to an outdoor seating area of one of the spaceport's restaurants, where you find Commander Ranulph Hines finishing what looks like a plate of salmon. JJ sits down across from him.`
+			`	The officer directs you and JJ to an outdoor seating area of one of the spaceport's restaurants, where you find Undersecretary Ranulph Hines finishing what looks like a plate of salmon. Nearby are a number of soldiers with patches marking them as his personal bodyguard. JJ sits down across from him.`
 			`	"Lieutenant Commander Jean-Jacques Soleau, in the flesh before my very eyes," Hines says, wiping the edges of his mouth. "I never imagined I'd be seeing you again after you so unceremoniously left the Navy."`
-			`	"I'm not here to discuss the past, Commander," JJ responds. "I'm here to prevent more bloodshed in this pointless war."`
+			`	"I'm not here to discuss the past, Undersecretary," JJ responds. "I'm here to prevent more bloodshed in this pointless war."`
 			`	"As am I, Soleau, as am I. Although I might ask, were the lives lost in your attacks on Geminus and Martini pointless, or were those necessary losses."`
 			`	"The Free Worlds are not responsible for those bombings," says JJ, sounding somewhat shaken. "We maintain our innocence, and were seeking to uncover who was responsible before the Republic ordered the Navy to take Kornephoros from us."`
 			`	"There was no 'taking,' Soleau. Kornephoros is rightfully Republic territory. We were simply enacting a police action on one of our own worlds, and arresting the terrorists who-"`
 			`	"So did you only come here to insult me and the Free Worlds or are you here to discuss peace as I asked?" JJ says, cutting Hines off. "As I said, I'm here to prevent more bloodshed. The deaths of those on Geminus and Martini as well as those in Kornephoros and Sabik were enough already. Continued bloodshed will not satisfy either side in this war."`
 			`	"Continued bloodshed like what occurred on Greenrock only days ago?" Hines quips. "I'm sure you are aware that the Navy cannot bring its full force upon the 'Free Worlds.' We have borders to patrol and piracy to tend to. You, on the other hand, have just shattered the biggest hub of piracy in the region, and I have no doubt that this has freed up many resources. It would appear to me that you yourselves are consolidating your forces for an offensive and further bloodshed despite your insistence to the opposite."`
 			`	"The actions that were taken on Greenrock were unsanctioned by the Free Worlds Senate or Council," JJ responds. "It was the result of rogue elements that have been taken care of."`
-			`	"Rogue elements within your ranks? You certainly have a history of those if it was a rogue element within your insurgency that committed the terrorist acts that took the lives of thousands of Republic citizens. At least, I presume it was a rogue element, as I've never known the venerable Jean-Jacques Soleau to be a liar, so I certainly believe you when you tell me that your 'Free Worlds' wouldn't do that. Although I'm sure you would have also told me that your 'Free Worlds' would never subjugate the population of Greenrock, either."`
+			`	"Rogue elements within your ranks? You certainly have a history of those if it was a rogue element within your insurgency that committed the terrorist acts that took the lives of thousands of Republic citizens. Or the one that murdered Admiral O'Brien practically before my very eyes just days ago. At least, I presume it was a rogue element, as I've never known the venerable Jean-Jacques Soleau to be a liar, so I certainly believe you when you tell me that your 'Free Worlds' wouldn't do those things. Although I'm sure you would have also told me that your 'Free Worlds' would never subjugate the population of Greenrock, either."`
 			choice
 				`	"This guy doesn't seem too interested in peace talks. We should go."`
 				`	(Let JJ handle the situation.)`
@@ -1900,11 +1902,11 @@ mission "FW Early Warning 3"
 			label handle
 			`	"So it would seem that the answer to my question is no," JJ says, raising his voice. "You're not interested in peace talks."`
 			`	"I am afraid so, Soleau. The Republic does not wish to lower itself to negotiating with terrorists. As such, I am ordering the arrest of you and every captain and crew member of the so-called 'Free Worlds' here for acts of terrorism and treason against the Republic."`
-			`	Some of the militia watching begin to reach for their weapons or move away as some Navy soldiers step forward, but JJ raises his hand to motion them to stop. The militia notice and hold their ground, as do the Navy soldiers. "Where is the Navy honor that we've all heard so much about?" JJ shouts loud enough for everyone watching to hear. "We come here with open arms asking for peace talks and you move to arrest us?" You hear jeers coming from some of the civilians watching.`
+			`	Some of the militia watching begin to reach for their weapons or move away as Hines' bodyguard and some Navy soldiers step forward, but JJ raises his hand to motion them to stop. The militia notice and hold their ground, as do the Navy soldiers. The bodyguards hesitate, but only take a couple of steps further. "Where is the Navy honor that we've all heard so much about?" JJ shouts loud enough for everyone watching to hear. "We come here with open arms asking for peace talks and you move to arrest us? With an illegal order from a civilian Undersecretary, no less?" You hear jeers coming from some of the civilians watching.`
 			`	Hines turns up his nose. "This is undoubtedly Republic territory you're standing on, Soleau, and therefore we have every right to arrest you."`
-			`	"I think your men disagree," JJ remarks. All of the Navy personnel have either remained in or returned to formation. "Remember that I myself was a part of the Navy once. A Navy that each and every one of your honored men surely remember, either because they lived it or because they grew up revering it. But a Navy that I left because of those like you. I'm sorry to disappoint you, but if we can't negotiate peace talks then we'll be leaving. I pray that you'll be wise enough to see the error in your ways and let us go." JJ stands up and begins walking off, leaving Hines to sulk in his chair.`
+			`	"I think these soldiers disagree," JJ remarks. All of the Navy personnel who stepped forward have returned to formation. "Remember that I myself was a part of the Navy once. A Navy that each and every one of these honored soldiers surely remember, either because they lived it or because they grew up revering it. But a Navy that I left because of those like you. I'm sorry to disappoint you, but if we can't negotiate peace talks then we'll be leaving. I pray that you'll be wise enough to see the error in your ways and let us go." JJ stands up and begins walking off, leaving Hines to sulk in his chair.`
 			`	"Your days are numbered, Soleau," Hines shouts, but he remains in his chair and gives no orders to his soldiers.`
-			`	The Navy allows you to leave unmolested as you enter your ship with JJ. "Launch your ship immediately and return to <planet>," he says. "The only thing that rivals honor among the Navy is duty, and I don't want to be around when Hines starts whipping his men into his shape."`
+			`	The Navy allows you to leave unmolested as you enter your ship with JJ. "Launch your ship immediately and return to <planet>," he says. "The only thing that rivals honor among the Navy is duty, and I don't want to be around when Hines finds a compliant Admiral or Commander to give the arrest order for him."`
 				launch
 	
 	on enter "Kornephoros"
@@ -1974,7 +1976,9 @@ mission "FW Early Warning 4"
 		event "battle in Wei"
 		conversation
 			`When you return, Tomek is busy preparing the fleet. It looks like most of the ships are ready to go, with some already starting their engines. "I take it the peace talks didn't work out," he says.`
-			`	"Not quite," says JJ. "Although I think we won a small victory in another way."`
+			`	"No," says JJ. "And Admiral Colin O'Brien is dead. "When they catch the guy who did it, I hope they sic the Questioners on him. I'd really love to know who wants the eastern Dirt Belt to get more violent. "`
+			`	Tomek snorts. "Don't tell me you believe in those fairy tales."`
+			`	JJ narrows his eyes briefly, then shakes his head. "Anyway, I think we won a small victory in another way."`
 			`	"You'll have to tell me later," Tomek says, beginning to shout as ships around you begin to take off. "Captain <last>, get your ship ready for the air. Our sensors tell us there's a massive Navy fleet in <system>. They could jump in here any hour now. I've ordered a preemptive strike; we're going to rush into <system> and take them head on before they can reach our territory. Detain any surviving Navy personnel on <planet> and we'll send in transports to either ferry them back to the Republic if they agree to join the Oathkeepers, or to Bourne if they refuse. Now get going. We have no time to waste."`
 				accept
 	
